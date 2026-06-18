@@ -26,10 +26,6 @@
       --radius-lg: 20px;
       --radius-md: 14px;
       --radius-sm: 10px;
-      /* neon palette for popups */
-      --neon-cyan: #38f2ff;
-      --neon-blue: #4fb6ff;
-      --neon-yellow: #fff04a;
     }
 
     [data-theme="light"] {
@@ -109,8 +105,8 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 24px;
-      padding: 14px 20px;
+      gap: 16px;
+      padding: 14px 18px;
       border: 1px solid var(--line);
       background: var(--panel);
       backdrop-filter: blur(18px);
@@ -140,7 +136,7 @@
       100% { left: 125%; }
     }
 
-    .brand { display: flex; align-items: center; gap: 14px; min-width: 0; flex-shrink: 0; }
+    .brand { display: flex; align-items: center; gap: 14px; min-width: 0; }
 
     .brand-mark {
       width: 52px;
@@ -187,8 +183,8 @@
     .top-actions {
       display: flex;
       align-items: center;
-      gap: 12px;
-      flex: 1;
+      gap: 10px;
+      flex-wrap: wrap;
       justify-content: flex-end;
     }
 
@@ -204,7 +200,6 @@
       cursor: pointer;
       transition: 0.2s ease;
       user-select: none;
-      flex-shrink: 0;
     }
 
     .chip:hover {
@@ -215,16 +210,11 @@
 
     .chip svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; opacity: 0.9; }
 
-    /* ---------- FIX #1: Search Bar Layout, Clean Centered Expansion ---------- */
+    /* ---------- unified utility bar: search + contact ---------- */
     .topbar-search {
       position: relative;
-      flex: 0 1 260px;
-      max-width: 480px;
-      transition: flex 0.35s cubic-bezier(.4,0,.2,1);
-    }
-
-    .topbar-search:focus-within {
-      flex: 1 1 100%;
+      flex: 1 1 220px;
+      max-width: 320px;
     }
 
     .topbar-search .search-icon {
@@ -238,7 +228,6 @@
       pointer-events: none;
       display: grid;
       place-items: center;
-      z-index: 2;
     }
 
     .topbar-search .search-icon svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; }
@@ -251,18 +240,75 @@
       border-radius: 999px;
       padding: 10px 14px 10px 38px;
       outline: none;
-      position: relative;
-      z-index: 1;
-      transition: border-color 0.25s ease, box-shadow 0.35s cubic-bezier(.4,0,.2,1), background 0.2s ease;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.2s ease;
     }
 
     .topbar-search input::placeholder { color: var(--muted); }
+
     .topbar-search input:hover { background: var(--card-hover); }
 
     .topbar-search input:focus {
       border-color: var(--accent-2);
       box-shadow: 0 0 0 4px rgba(255, 206, 58, 0.16), 0 0 18px rgba(255, 206, 58, 0.32);
     }
+
+    .contact-wrap { position: relative; }
+
+    .contact-card {
+      position: absolute;
+      top: calc(100% + 12px);
+      right: 0;
+      width: 280px;
+      max-width: calc(100vw - 48px);
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      padding: 14px;
+      backdrop-filter: blur(20px);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-8px) scale(0.96);
+      transform-origin: top right;
+      transition: opacity 0.22s ease, transform 0.22s cubic-bezier(.4,0,.2,1), visibility 0.22s;
+      z-index: 30;
+    }
+
+    .contact-wrap.open .contact-card {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0) scale(1);
+    }
+
+    .contact-card-title {
+      font-size: 0.74rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 2px 4px 10px;
+    }
+
+    .contact-entry {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid transparent;
+      transition: 0.2s ease;
+    }
+
+    .contact-entry + .contact-entry { margin-top: 4px; }
+
+    .contact-entry:hover {
+      background: var(--card-hover);
+      border-color: rgba(255, 206, 58, 0.35);
+      box-shadow: 0 0 0 1px var(--accent-2) inset, 0 0 18px rgba(255, 206, 58, 0.22);
+      transform: translateY(-1px);
+    }
+
+    .contact-entry strong { font-size: 0.92rem; color: var(--text); }
+    .contact-entry span { font-size: 0.84rem; color: var(--accent); word-break: break-all; }
 
     /* ---------- hero ---------- */
     .hero {
@@ -371,44 +417,6 @@
 
     .stat strong { font-size: 2rem; line-height: 1; letter-spacing: -0.04em; color: var(--accent-2); }
     .stat span { color: var(--muted); font-size: 0.94rem; }
-
-    /* ---------- "access previous semester" callout, placed in footer ---------- */
-    .footer-redirect {
-      margin-bottom: 18px;
-      text-align: center;
-    }
-
-    .footer-redirect-label {
-      margin: 0 0 12px;
-      color: var(--muted);
-      font-size: 0.96rem;
-      line-height: 1.6;
-    }
-
-    /* ---------- FIX #4: Clean and Professional Neon Glow Surround Effect ---------- */
-    .ee-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 13px 28px;
-      border-radius: 999px;
-      border: 2px solid #00aaff;
-      background: #071530;
-      color: #38f2ff;
-      font-weight: 800;
-      font-size: 1.05rem;
-      letter-spacing: 0.03em;
-      box-shadow: 0 0 15px rgba(0, 170, 255, 0.35);
-      transition: transform 0.25s cubic-bezier(.4,0,.2,1), box-shadow 0.25s ease, background 0.25s ease;
-    }
-
-    .ee-link svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 2.5; }
-
-    .ee-link:hover, .ee-link:focus-visible {
-      transform: translateY(-2px);
-      background: #0c234d;
-      box-shadow: 0 0 25px rgba(0, 170, 255, 0.6);
-    }
 
     /* ---------- layout / tree ---------- */
     .layout {
@@ -589,38 +597,20 @@
       pointer-events: none;
     }
 
-    .card-top { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 10px; }
+    .card-top { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 10px; }
 
-    /* ---------- FIX #3: Clear, Sharper Logos with Visible Defined Borders ---------- */
     .card-badge {
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
       display: grid;
       place-items: center;
-      background: rgba(9, 17, 36, 0.9);
-      border: 2px solid var(--accent);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+      background: linear-gradient(135deg, var(--glow-1), var(--glow-2));
+      border: 1px solid var(--line);
       flex: 0 0 auto;
-      padding: 8px;
     }
 
-    .card:hover .card-badge {
-      border-color: var(--accent-2);
-      box-shadow: 0 4px 16px rgba(255, 206, 58, 0.2);
-    }
-
-    .card-badge svg { 
-      width: 100%; 
-      height: 100%; 
-      fill: none; 
-      color: var(--accent);
-      transition: color 0.2s ease;
-    }
-    
-    .card:hover .card-badge svg {
-      color: var(--accent-2);
-    }
+    .card-badge svg { width: 20px; height: 20px; fill: currentColor; color: var(--accent); }
 
     .card h4 { margin: 0 0 6px; font-size: 1.02rem; }
     .card p { margin: 0; color: var(--muted); line-height: 1.65; font-size: 0.94rem; }
@@ -651,7 +641,7 @@
       color: var(--text);
       line-height: 1.65;
     }
-    .notice strong { block; margin-bottom: 6px; color: var(--accent-2); }
+    .notice strong { display: block; margin-bottom: 6px; color: var(--accent-2); }
 
     /* ---------- footer ---------- */
     .footer {
@@ -666,222 +656,36 @@
       backdrop-filter: blur(12px);
     }
     .footer p { margin: 0 0 6px; }
+    .footer-link-row { margin-top: 10px !important; }
     .footer-copyright {
-      margin-top: 0 !important;
-      padding-top: 0;
+      margin-top: 14px !important;
+      padding-top: 14px;
+      border-top: 1px solid var(--line);
       font-size: 0.82rem;
       color: var(--muted);
       letter-spacing: 0.01em;
     }
+    .footer-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-left: 4px;
+      padding: 7px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--card);
+      color: var(--accent-2);
+      font-weight: 700;
+      transition: 0.25s ease;
+    }
+    .footer-link:hover {
+      background: var(--card-hover);
+      box-shadow: 0 0 0 1px var(--accent-2) inset, 0 0 22px rgba(255, 206, 58, 0.35);
+      transform: translateY(-1px);
+    }
 
     .hidden { display: none !important; }
     .highlight { outline: 2px solid rgba(255, 206, 58, 0.45); outline-offset: -2px; }
-
-    /* =========================================================
-       MODAL SYSTEM (FIX #2: Unwanted Spinning Background Rings Removed)
-       ========================================================= */
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(2, 6, 16, 0.75);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      z-index: 100;
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.28s ease, visibility 0.28s ease;
-    }
-    .modal-overlay.open {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    .modal-box {
-      position: relative;
-      width: 100%;
-      max-width: 420px;
-      border-radius: 24px;
-      padding: 2px;
-      background: rgba(146, 178, 224, 0.2);
-      transform: scale(0.94) translateY(8px);
-      opacity: 0;
-      transition: transform 0.3s cubic-bezier(.2,.8,.25,1), opacity 0.25s ease;
-      box-shadow: var(--shadow);
-    }
-    .modal-overlay.open .modal-box {
-      transform: scale(1) translateY(0);
-      opacity: 1;
-    }
-
-    /* Spinning animations dropped completely */
-    .modal-box::before { display: none; }
-
-    .modal-inner {
-      position: relative;
-      z-index: 1;
-      border-radius: 22px;
-      background: #080f22;
-      padding: 26px 24px 24px;
-      overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-    }
-
-    .modal-close {
-      position: absolute;
-      top: 14px;
-      right: 14px;
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      border: 1px solid rgba(146, 178, 224, 0.25);
-      background: rgba(255, 255, 255, 0.04);
-      color: #cfe3ff;
-      display: grid;
-      place-items: center;
-      cursor: pointer;
-      font-size: 18px;
-      line-height: 1;
-      transition: 0.2s ease;
-      z-index: 2;
-    }
-    .modal-close:hover {
-      background: rgba(255, 80, 90, 0.16);
-      border-color: rgba(255, 90, 100, 0.5);
-      color: #ffb3b8;
-      transform: rotate(90deg);
-      box-shadow: 0 0 16px rgba(255, 90, 100, 0.35);
-    }
-
-    .modal-eyebrow {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--neon-cyan);
-      margin: 0 0 6px;
-    }
-
-    .modal-title {
-      margin: 0 0 18px;
-      font-size: 1.25rem;
-      font-weight: 750;
-      color: #f1f6ff;
-      letter-spacing: -0.01em;
-    }
-
-    /* ----- contact modal content ----- */
-    .modal-email-list { display: flex; flex-direction: column; gap: 10px; }
-
-    .modal-email-entry {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-      padding: 14px 16px;
-      border-radius: 14px;
-      border: 1px solid rgba(56, 242, 255, 0.18);
-      background: rgba(56, 242, 255, 0.04);
-      transition: 0.22s ease;
-    }
-    .modal-email-entry:hover {
-      background: rgba(56, 242, 255, 0.09);
-      border-color: rgba(56, 242, 255, 0.45);
-      box-shadow: 0 0 22px rgba(56, 242, 255, 0.25);
-      transform: translateY(-2px);
-    }
-    .modal-email-entry strong {
-      color: #eaf6ff;
-      font-size: 0.94rem;
-      font-weight: 650;
-    }
-    .modal-email-entry .neon-email {
-      font-size: 0.92rem;
-      color: var(--neon-cyan);
-      word-break: break-all;
-      transition: color 0.22s ease;
-    }
-    .modal-email-entry:hover .neon-email {
-      color: #b9faff;
-    }
-
-    /* ----- theme modal content ----- */
-    .theme-option-list { display: flex; flex-direction: column; gap: 10px; }
-
-    .theme-option {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 14px 16px;
-      border-radius: 14px;
-      border: 1px solid var(--line, rgba(146,178,224,0.18));
-      background: rgba(255, 255, 255, 0.03);
-      cursor: pointer;
-      transition: 0.22s cubic-bezier(.4,0,.2,1);
-      text-align: left;
-      width: 100%;
-      color: #eaf2ff;
-    }
-    .theme-option-icon {
-      width: 38px;
-      height: 38px;
-      border-radius: 11px;
-      display: grid;
-      place-items: center;
-      background: rgba(79, 182, 255, 0.12);
-      color: var(--neon-blue);
-      flex: 0 0 auto;
-      transition: 0.22s ease;
-    }
-    .theme-option-icon svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-    .theme-option-copy { display: flex; flex-direction: column; gap: 2px; flex: 1; }
-    .theme-option-copy strong { font-size: 0.96rem; font-weight: 650; }
-    .theme-option-copy span { font-size: 0.82rem; color: #8da2c9; }
-    .theme-option-check {
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      border: 1.5px solid rgba(146, 178, 224, 0.35);
-      display: grid;
-      place-items: center;
-      flex: 0 0 auto;
-      transition: 0.22s ease;
-    }
-    .theme-option-check svg {
-      width: 11px; height: 11px;
-      fill: none; stroke: #06101f; stroke-width: 3;
-      stroke-linecap: round; stroke-linejoin: round;
-      opacity: 0;
-      transition: opacity 0.18s ease;
-    }
-
-    .theme-option:hover {
-      background: rgba(79, 182, 255, 0.08);
-      border-color: rgba(79, 182, 255, 0.4);
-      box-shadow: 0 0 22px rgba(79, 182, 255, 0.22);
-      transform: translateY(-2px);
-    }
-    .theme-option:hover .theme-option-icon {
-      background: rgba(79, 182, 255, 0.22);
-      box-shadow: 0 0 14px rgba(79, 182, 255, 0.4);
-    }
-
-    .theme-option.selected {
-      border-color: var(--neon-cyan);
-      background: rgba(56, 242, 255, 0.07);
-      box-shadow: 0 0 0 1px rgba(56, 242, 255, 0.5) inset, 0 0 22px rgba(56, 242, 255, 0.25);
-    }
-    .theme-option.selected .theme-option-icon {
-      background: var(--neon-cyan);
-      color: #06101f;
-    }
-    .theme-option.selected .theme-option-check {
-      background: var(--neon-cyan);
-      border-color: var(--neon-cyan);
-    }
-    .theme-option.selected .theme-option-check svg { opacity: 1; }
 
     @media (max-width: 1120px) {
       .hero-grid, .layout { grid-template-columns: 1fr; }
@@ -890,30 +694,29 @@
 
     @media (max-width: 760px) {
       .shell { width: min(100% - 18px, 100%); padding-top: 10px; }
-      .topbar { top: 8px; padding: 12px; border-radius: 22px; flex-direction: column; align-items: stretch; gap: 14px; }
+      .topbar { top: 8px; padding: 12px; border-radius: 22px; }
       .brand { gap: 10px; }
       .brand-mark { width: 46px; height: 46px; border-radius: 14px; }
       .hero-grid, .content, .panel-head { padding-left: 14px; padding-right: 14px; }
       .hero h2 { font-size: 1.7rem; }
       .cards { grid-template-columns: 1fr; }
       .stats { grid-template-columns: 1fr 1fr; }
-      .top-actions { gap: 8px; width: 100%; justify-content: space-between; }
-      .topbar-search { flex: 1 1 auto; max-width: none; order: 0; }
+      .top-actions { gap: 8px; }
+      .chip { padding: 10px 12px; }
+      .topbar-search { flex: 1 1 100%; max-width: none; order: -1; }
+      .contact-card { right: 0; left: auto; }
     }
 
     @media (max-width: 520px) {
       .stats { grid-template-columns: 1fr; }
       .hero-actions, .card-links, .top-actions { flex-direction: column; align-items: stretch; }
       .btn, .chip, .mini-link { width: 100%; justify-content: center; }
-      .topbar-search { width: 100%; }
-      .ee-link { width: 100%; justify-content: center; }
+      .topbar-search, .contact-wrap { width: 100%; }
+      .contact-card { right: 0; width: 100%; }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .topbar::after, .hero::before, .pulse-dot, .node-row, .modal-overlay.open .modal-box {
-        animation: none !important;
-      }
-      .topbar-search input:focus { transition: none; }
+      .topbar::after, .hero::before, .pulse-dot, .node-row { animation: none !important; }
       * { scroll-behavior: auto !important; }
     }
   </style>
@@ -981,14 +784,28 @@
           <input id="searchInput" type="search" placeholder="Search semester, course, folder, or paper..." />
         </div>
 
-        <button class="chip" id="contactBtn" type="button" title="Contact the team" aria-haspopup="dialog" aria-expanded="false">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
-          Contact
-        </button>
+        <div class="contact-wrap" id="contactWrap">
+          <button class="chip" id="contactBtn" type="button" title="Contact the team" aria-haspopup="true" aria-expanded="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+            Contact
+          </button>
 
-        <button class="chip theme-toggle" id="themeToggle" type="button" title="Switch theme" aria-haspopup="dialog" aria-expanded="false">
+          <div class="contact-card" id="contactCard" role="dialog" aria-label="Contact information">
+            <div class="contact-card-title">Core Team — BSEE 25/29</div>
+            <a class="contact-entry" href="mailto:muhduzair0179@gmail.com">
+              <strong>Muhammad Uzair · BSEE 25-29</strong>
+              <span>muhduzair0179@gmail.com</span>
+            </a>
+            <a class="contact-entry" href="mailto:javedasad002@gmail.com">
+              <strong>Asad Javed · BSEE 25-29</strong>
+              <span>javedasad002@gmail.com</span>
+            </a>
+          </div>
+        </div>
+
+        <button class="chip theme-toggle" id="themeToggle" type="button" title="Switch theme">
           <span id="themeIcon" aria-hidden="true"></span>
-          <span id="themeLabel">Dark</span>
+          <span id="themeLabel">System</span>
         </button>
       </div>
     </header>
@@ -1044,8 +861,8 @@
         <div class="content">
           <div class="section-title">
             <div>
-              <h3>Primary Folders</h3>
-              <p>Expand the primary folders below to access available content and resources.</p>
+              <h3>Primary folders</h3>
+              <p>Keep the homepage simple; place everything else inside the tree.</p>
             </div>
           </div>
 
@@ -1053,10 +870,7 @@
             <div class="card">
               <div class="card-top">
                 <div class="card-badge" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
-                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
-                  </svg>
+                  <svg viewBox="0 0 24 24"><path d="M4 6a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6zm2 0v10h14V8h-6.2l-2-2H6z"/></svg>
                 </div>
                 <div>
                   <h4>Semesters</h4>
@@ -1069,11 +883,7 @@
                   Open tree
                 </a>
                 <button class="mini-link" type="button" id="openSemestersBtn">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M4 19.2V5.6c0-.6.4-1 1-1h2.4c.6 0 1 .4 1 1v13.6c0 .6-.4 1-1 1H5c-.6 0-1-.4-1-1z"/>
-                    <path d="M9.4 19.2V4.4c0-.6.4-1 1-1h2.4c.6 0 1 .4 1 1v14.8c0 .6-.4 1-1 1h-2.4c-.6 0-1-.4-1-1z"/>
-                    <path d="M15.3 19.6 14 6.3c-.06-.6.36-1.1.96-1.16l2.38-.24c.6-.06 1.13.38 1.2.98l1.3 13.3c.06.6-.36 1.1-.96 1.16l-2.38.24c-.6.06-1.13-.38-1.2-.98z"/>
-                  </svg>
+                  <svg viewBox="0 0 24 24"><path d="M4 6a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6zm2 0v10h14V8h-6.2l-2-2H6z"/></svg>
                   Focus semesters
                 </button>
               </div>
@@ -1082,11 +892,7 @@
             <div class="card">
               <div class="card-top">
                 <div class="card-badge" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
-                    <line x1="8" y1="21" x2="16" y2="21"/>
-                    <line x1="12" y1="17" x2="12" y2="21"/>
-                  </svg>
+                  <svg viewBox="0 0 24 24"><path d="M12 3l7 4v10l-7 4-7-4V7l7-4zm0 2.3L7 8l5 2.7L17 8l-5-2.7zM7 10v5.9l5 2.9v-5.9L7 10zm10 0-5 2.9v5.9l5-2.9V10z"/></svg>
                 </div>
                 <div>
                   <h4>Projects</h4>
@@ -1099,11 +905,7 @@
                   View projects
                 </a>
                 <button class="mini-link" type="button" id="openProjectsBtn">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="7" y="7" width="10" height="10" rx="1.2"/>
-                    <rect x="10" y="10" width="4" height="4" rx="0.6"/>
-                    <path d="M9 2v3M12 2v3M15 2v3M9 19v3M12 19v3M15 19v3M2 9h3M2 12h3M2 15h3M19 9h3M19 12h3M19 15h3"/>
-                  </svg>
+                  <svg viewBox="0 0 24 24"><path d="M12 3l7 4v10l-7 4-7-4V7l7-4zm0 2.3L7 8l5 2.7L17 8l-5-2.7z"/></svg>
                   Focus projects
                 </button>
               </div>
@@ -1114,85 +916,15 @@
     </section>
 
     <footer class="footer">
-      <div class="footer-redirect">
-        <p class="footer-redirect-label">If you want to access previous semester content and projects click this website:</p>
-        <a class="ee-link" href="https://eeworkpalace.github.io/EE_Work_Palace/" target="_blank" rel="noopener noreferrer">
-          EE Work Palace
-          <svg viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8"/></svg>
+      <p>Built for a BS Electrical Engineering resource vault. Ready for GitHub Pages.</p>
+      <p class="footer-link-row">
+        If someone wants to access previous semester content and projects click this website:
+        <a class="footer-link" href="https://eeworkpalace.github.io/EE_Work_Palace/" target="_blank" rel="noopener noreferrer">
+          EE Work Palace ↗
         </a>
-      </div>
+      </p>
       <p class="footer-copyright">© 2026 Muhammad Uzair &amp; Asad Javed. All rights reserved.</p>
     </footer>
-  </div>
-
-  <div class="modal-overlay" id="contactOverlay" aria-hidden="true">
-    <div class="modal-box">
-      <div class="modal-inner" role="dialog" aria-modal="true" aria-label="Contact information">
-        <button class="modal-close" id="contactClose" type="button" aria-label="Close contact popup">&times;</button>
-        <div class="modal-eyebrow">Core Team — BSEE 25/29</div>
-        <h3 class="modal-title">Get in touch</h3>
-        <div class="modal-email-list">
-          <a class="modal-email-entry" href="mailto:muhduzair0179@gmail.com">
-            <strong>Muhammad Uzair · BSEE 25-29</strong>
-            <span class="neon-email">muhduzair0179@gmail.com</span>
-          </a>
-          <a class="modal-email-entry" href="mailto:javedasad002@gmail.com">
-            <strong>Asad Javed · BSEE 25-29</strong>
-            <span class="neon-email">javedasad002@gmail.com</span>
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal-overlay" id="themeOverlay" aria-hidden="true">
-    <div class="modal-box">
-      <div class="modal-inner" role="dialog" aria-modal="true" aria-label="Theme selection">
-        <button class="modal-close" id="themeClose" type="button" aria-label="Close theme popup">&times;</button>
-        <div class="modal-eyebrow">Appearance</div>
-        <h3 class="modal-title">Choose a theme</h3>
-        <div class="theme-option-list" id="themeOptionList">
-          <button class="theme-option" type="button" data-theme-choice="dark">
-            <span class="theme-option-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
-            </span>
-            <span class="theme-option-copy">
-              <strong>Dark</strong>
-              <span>Deep blue vault aesthetic (default)</span>
-            </span>
-            <span class="theme-option-check" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
-            </span>
-          </button>
-
-          <button class="theme-option" type="button" data-theme-choice="light">
-            <span class="theme-option-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>
-            </span>
-            <span class="theme-option-copy">
-              <strong>Light</strong>
-              <span>Bright, clean daylight palette</span>
-            </span>
-            <span class="theme-option-check" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
-            </span>
-          </button>
-
-          <button class="theme-option" type="button" data-theme-choice="system">
-            <span class="theme-option-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg>
-            </span>
-            <span class="theme-option-copy">
-              <strong>System</strong>
-              <span>Match your device preference</span>
-            </span>
-            <span class="theme-option-check" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
-            </span>
-          </button>
-        </div>
-      </div>
-    </div>
   </div>
 
   <script>
@@ -1228,7 +960,223 @@
                   { type: 'item', title: 'Assignments', desc: 'Homework and practice tasks.', meta: 'Tasks' },
                   { type: 'item', title: 'Manuals', desc: 'Course and lab manuals.', meta: 'PDFs' }
                 ]
+              },
+              {
+                type: 'folder',
+                title: 'CIS-101 Computer Fundamentals & Programming (CF&P)',
+                desc: 'Computer basics and programming resources.',
+                meta: 'Course',
+                open: false,
+                children: [
+                  { type: 'item', title: 'Lecture Notes', desc: 'Topic-wise notes.', meta: 'Docs' },
+                  { type: 'item', title: 'Slides', desc: 'Lecture slides.', meta: 'PPT/PDF' },
+                  { type: 'item', title: 'CEPs', desc: 'Project/problem-solving work.', meta: 'CEPs' },
+                  { type: 'item', title: 'LAB', desc: 'Lab practice and exercises.', meta: 'Labs' },
+                  { type: 'item', title: 'Reference Books', desc: 'Books and references.', meta: 'Books' },
+                  { type: 'item', title: 'Assignments', desc: 'Assignments and sheets.', meta: 'Tasks' },
+                  { type: 'item', title: 'Manuals', desc: 'Guides and manuals.', meta: 'PDFs' }
+                ]
+              },
+              {
+                type: 'folder',
+                title: 'PAM-101 Calculus I (Cal-I)',
+                desc: 'Calculus I course resources.',
+                meta: 'Course',
+                open: false,
+                children: [
+                  { type: 'item', title: 'Lecture Notes', desc: 'Detailed notes.', meta: 'Docs' },
+                  { type: 'item', title: 'Slides', desc: 'Teaching slides.', meta: 'PPT/PDF' },
+                  { type: 'item', title: 'Reference Books', desc: 'Textbooks and references.', meta: 'Books' },
+                  { type: 'item', title: 'Assignments', desc: 'Practice and homework.', meta: 'Tasks' },
+                  { type: 'item', title: 'Manuals', desc: 'Useful manuals and guides.', meta: 'PDFs' }
+                ]
+              },
+              {
+                type: 'folder',
+                title: 'CMS-109 Entrepreneurship (ENT)',
+                desc: 'Entrepreneurship and business basics.',
+                meta: 'Course',
+                open: false,
+                children: [
+                  { type: 'item', title: 'Slides', desc: 'Lecture slides.', meta: 'PPT/PDF' },
+                  { type: 'item', title: 'Reference Books', desc: 'Supporting books.', meta: 'Books' }
+                ]
+              },
+              {
+                type: 'folder',
+                title: 'CMS-123 Ideology & Constitution of Pakistan (ICOP)',
+                desc: 'Ideology and constitution materials.',
+                meta: 'Course',
+                open: false,
+                children: [
+                  { type: 'item', title: 'Lecture Notes', desc: 'Core notes.', meta: 'Docs' },
+                  { type: 'item', title: 'Slides', desc: 'Lecture slides.', meta: 'PPT/PDF' },
+                  { type: 'item', title: 'Presentations', desc: 'Presentation files.', meta: 'Slides' },
+                  { type: 'item', title: 'Reference Books', desc: 'Reference material.', meta: 'Books' }
+                ]
+              },
+              {
+                type: 'folder',
+                title: 'CMS-101 Islamic Studies (IS)',
+                desc: 'Islamic studies lecture material.',
+                meta: 'Course',
+                open: false,
+                children: [
+                  { type: 'item', title: 'Lecture Notes', desc: 'Notes and readings.', meta: 'Docs' }
+                ]
+              },
+              {
+                type: 'folder',
+                title: 'BSEE 25/29 Past Papers (Semester I)',
+                desc: 'Past papers for Semester 1.',
+                meta: 'Papers',
+                open: false,
+                children: [
+                  { type: 'item', title: 'Midterms', desc: 'Midterm papers.', meta: 'PDFs' },
+                  { type: 'item', title: 'Finals', desc: 'Final exam papers.', meta: 'PDFs' },
+                  { type: 'item', title: 'Solved', desc: 'Solved papers and keys.', meta: 'Solved' }
+                ]
               }
+            ]
+          },
+          {
+            id: 'sem2',
+            type: 'folder',
+            title: 'Semester 2',
+            desc: 'Second semester material and papers.',
+            meta: 'BSEE 25/29',
+            open: false,
+            children: [
+              {
+                type: 'folder',
+                title: 'EE-120 Electronic Devices & Circuits (EDC)',
+                desc: 'Devices and circuits course content.',
+                meta: 'Course',
+                open: false,
+                children: [
+                  { type: 'item', title: 'Lecture Notes', desc: 'Topic-wise notes.', meta: 'Docs' },
+                  { type: 'item', title: 'Slides', desc: 'Slides and lecture decks.', meta: 'PPT/PDF' },
+                  { type: 'item', title: 'Video Lectures', desc: 'Video references and links.', meta: 'Videos' },
+                  { type: 'item', title: 'CEPs', desc: 'Complex engineering problems.', meta: 'CEPs' },
+                  { type: 'item', title: 'LAB', desc: 'Lab work and experiments.', meta: 'Labs' },
+                  { type: 'item', title: 'Reference Books', desc: 'Recommended books.', meta: 'Books' },
+                  { type: 'item', title: 'Assignments', desc: 'Assignments and exercises.', meta: 'Tasks' },
+                  { type: 'item', title: 'Manuals', desc: 'Course and lab manuals.', meta: 'PDFs' }
+                ]
+              },
+              {
+                type: 'folder',
+                title: 'PAM-202 Calculus II (Cal-II)',
+                desc: 'Calculus II resources.',
+                meta: 'Course',
+                open: false,
+                children: [
+                  { type: 'item', title: 'Lecture Notes', desc: 'Detailed notes.', meta: 'Docs' },
+                  { type: 'item', title: 'Slides', desc: 'Lecture slides.', meta: 'PPT/PDF' },
+                  { type: 'item', title: 'Reference Books', desc: 'Supporting books.', meta: 'Books' },
+                  { type: 'item', title: 'Assignments', desc: 'Assignments and problem sets.', meta: 'Tasks' },
+                  { type: 'item', title: 'Manuals', desc: 'Guides and manuals.', meta: 'PDFs' }
+                ]
+              },
+              {
+                type: 'folder',
+                title: 'PAM-242 Linear Algebra (LA)',
+                desc: 'Linear algebra course resources.',
+                meta: 'Course',
+                open: false,
+                children: [
+                  { type: 'item', title: 'Lecture Notes', desc: 'Notes and formulas.', meta: 'Docs' },
+                  { type: 'item', title: 'Slides', desc: 'Slides and class decks.', meta: 'PPT/PDF' },
+                  { type: 'item', title: 'Video Lectures', desc: 'Video references.', meta: 'Videos' },
+                  { type: 'item', title: 'Reference Books', desc: 'Reference texts.', meta: 'Books' },
+                  { type: 'item', title: 'Assignments', desc: 'Assignments and exercises.', meta: 'Tasks' },
+                  { type: 'item', title: 'Manuals', desc: 'Course manuals.', meta: 'PDFs' }
+                ]
+              },
+              {
+                type: 'folder',
+                title: 'PAM-255 Differential Equations (DE)',
+                desc: 'Differential equations material.',
+                meta: 'Course',
+                open: false,
+                children: [
+                  { type: 'item', title: 'Lecture Notes', desc: 'Core notes.', meta: 'Docs' },
+                  { type: 'item', title: 'Reference Books', desc: 'Books and references.', meta: 'Books' },
+                  { type: 'item', title: 'Assignments', desc: 'Practice sheets.', meta: 'Tasks' },
+                  { type: 'item', title: 'Manuals', desc: 'Manuals and guides.', meta: 'PDFs' }
+                ]
+              },
+              {
+                type: 'folder',
+                title: 'PAM-124 Physics (AP)',
+                desc: 'Applied physics course materials.',
+                meta: 'Course',
+                open: false,
+                children: [
+                  { type: 'item', title: 'Lecture Notes', desc: 'Lecture notes.', meta: 'Docs' },
+                  { type: 'item', title: 'Slides', desc: 'Slides and visual material.', meta: 'PPT/PDF' },
+                  { type: 'item', title: 'LAB', desc: 'Lab experiments and reports.', meta: 'Labs' },
+                  { type: 'item', title: 'Reference Books', desc: 'Book references.', meta: 'Books' },
+                  { type: 'item', title: 'Assignments', desc: 'Assignments.', meta: 'Tasks' }
+                ]
+              },
+              {
+                type: 'folder',
+                title: 'CMS-210 Functional English (FE)',
+                desc: 'Functional English resources.',
+                meta: 'Course',
+                open: false,
+                children: [
+                  { type: 'item', title: 'Reference Books', desc: 'Useful books.', meta: 'Books' },
+                  { type: 'item', title: 'Assignments', desc: 'Writing tasks and assignments.', meta: 'Tasks' }
+                ]
+              },
+              {
+                type: 'folder',
+                title: 'BSEE 25/29 Past Papers (Semester II)',
+                desc: 'Past papers for Semester 2.',
+                meta: 'Papers',
+                open: false,
+                children: [
+                  { type: 'item', title: 'Midterms', desc: 'Midterm papers.', meta: 'PDFs' },
+                  { type: 'item', title: 'Finals', desc: 'Final exam papers.', meta: 'PDFs' },
+                  { type: 'item', title: 'Solved', desc: 'Solved papers and keys.', meta: 'Solved' }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        id: 'projects',
+        type: 'folder',
+        title: 'Projects',
+        desc: 'University and individual projects.',
+        meta: '2 subfolders',
+        open: false,
+        children: [
+          {
+            type: 'folder',
+            title: 'University Projects',
+            desc: 'Team-based academic and university projects.',
+            meta: 'Folder',
+            open: false,
+            children: [
+              { type: 'item', title: 'Project Reports', desc: 'Reports and documentation.', meta: 'Docs' },
+              { type: 'item', title: 'Presentations', desc: 'Slides for presentations.', meta: 'Slides' },
+              { type: 'item', title: 'Source Files', desc: 'Project source files.', meta: 'Files' }
+            ]
+          },
+          {
+            type: 'folder',
+            title: 'Individual Projects',
+            desc: 'Personal projects and practice builds.',
+            meta: 'Folder',
+            open: false,
+            children: [
+              { type: 'item', title: 'Mini Projects', desc: 'Small independent builds.', meta: 'Projects' },
+              { type: 'item', title: 'Design Files', desc: 'Diagrams, schematics, and files.', meta: 'Files' },
+              { type: 'item', title: 'Documentation', desc: 'Writeups and notes.', meta: 'Docs' }
             ]
           }
         ]
@@ -1239,15 +1187,19 @@
     const resultCount = document.getElementById('resultCount');
     const searchInput = document.getElementById('searchInput');
     const themeToggle = document.getElementById('themeToggle');
+    const contactWrap = document.getElementById('contactWrap');
     const contactBtn = document.getElementById('contactBtn');
     const themeIcon = document.getElementById('themeIcon');
     const themeLabel = document.getElementById('themeLabel');
     const openSemestersBtn = document.getElementById('openSemestersBtn');
     const openProjectsBtn = document.getElementById('openProjectsBtn');
 
-    const iconFolder = `<svg viewBox="0 0 24 24"><path d="M4 6a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6zm2 0v10h14V8h-6.2l-2-2H6z"/></svg>`;
-    const iconFile = `<svg viewBox="0 0 24 24"><path d="M7 3h7l5 5v13a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm6 1.5V9h4.5"/></svg>`;
-    const chevron = `<svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>`;
+    const iconFolder = `
+      <svg viewBox="0 0 24 24"><path d="M4 6a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6zm2 0v10h14V8h-6.2l-2-2H6z"/></svg>`;
+    const iconFile = `
+      <svg viewBox="0 0 24 24"><path d="M7 3h7l5 5v13a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm6 1.5V9h4.5"/></svg>`;
+    const chevron = `
+      <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>`;
 
     function createNode(node, level = 0, index = 0) {
       const li = document.createElement('li');
@@ -1382,6 +1334,7 @@
       updateCount();
     }
 
+    /* ---------- three-state theme switcher: light / dark / system ---------- */
     const THEME_KEY = 'bsee-vault-theme-pref';
     const sunIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>`;
     const moonIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>`;
@@ -1393,7 +1346,7 @@
       return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     }
 
-    let themePref = localStorage.getItem(THEME_KEY) || 'dark';
+    let themePref = localStorage.getItem(THEME_KEY) || 'system';
 
     function applyTheme(pref) {
       themePref = pref;
@@ -1402,11 +1355,13 @@
       themeIcon.innerHTML = themeIcons[pref];
       themeLabel.textContent = themeLabels[pref];
       localStorage.setItem(THEME_KEY, pref);
-
-      document.querySelectorAll('.theme-option').forEach(opt => {
-        opt.classList.toggle('selected', opt.dataset.themeChoice === pref);
-      });
     }
+
+    themeToggle.addEventListener('click', () => {
+      const order = ['light', 'dark', 'system'];
+      const next = order[(order.indexOf(themePref) + 1) % order.length];
+      applyTheme(next);
+    });
 
     if (window.matchMedia) {
       window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
@@ -1418,53 +1373,27 @@
 
     openSemestersBtn.addEventListener('click', () => openOnly('Semesters'));
     openProjectsBtn.addEventListener('click', () => openOnly('Projects'));
+
     searchInput.addEventListener('input', (e) => searchTree(e.target.value));
 
-    function openModal(overlay, triggerBtn) {
-      overlay.classList.add('open');
-      overlay.setAttribute('aria-hidden', 'false');
-      if (triggerBtn) triggerBtn.setAttribute('aria-expanded', 'true');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeModal(overlay, triggerBtn) {
-      overlay.classList.remove('open');
-      overlay.setAttribute('aria-hidden', 'true');
-      if (triggerBtn) triggerBtn.setAttribute('aria-expanded', 'false');
-      const anyOpen = document.querySelector('.modal-overlay.open');
-      if (!anyOpen) document.body.style.overflow = '';
-    }
-
-    const contactOverlay = document.getElementById('contactOverlay');
-    const contactClose = document.getElementById('contactClose');
-
-    contactBtn.addEventListener('click', () => openModal(contactOverlay, contactBtn));
-    contactClose.addEventListener('click', () => closeModal(contactOverlay, contactBtn));
-    contactOverlay.addEventListener('click', (e) => {
-      if (e.target === contactOverlay) closeModal(contactOverlay, contactBtn);
+    /* ---------- contact dropdown ---------- */
+    contactBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = contactWrap.classList.toggle('open');
+      contactBtn.setAttribute('aria-expanded', String(isOpen));
     });
 
-    const themeOverlay = document.getElementById('themeOverlay');
-    const themeClose = document.getElementById('themeClose');
-    const themeOptionButtons = document.querySelectorAll('.theme-option');
-
-    themeToggle.addEventListener('click', () => openModal(themeOverlay, themeToggle));
-    themeClose.addEventListener('click', () => closeModal(themeOverlay, themeToggle));
-    themeOverlay.addEventListener('click', (e) => {
-      if (e.target === themeOverlay) closeModal(themeOverlay, themeToggle);
-    });
-
-    themeOptionButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        applyTheme(btn.dataset.themeChoice);
-        setTimeout(() => closeModal(themeOverlay, themeToggle), 180);
-      });
+    document.addEventListener('click', (e) => {
+      if (!contactWrap.contains(e.target)) {
+        contactWrap.classList.remove('open');
+        contactBtn.setAttribute('aria-expanded', 'false');
+      }
     });
 
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
-        if (contactOverlay.classList.contains('open')) closeModal(contactOverlay, contactBtn);
-        if (themeOverlay.classList.contains('open')) closeModal(themeOverlay, themeToggle);
+        contactWrap.classList.remove('open');
+        contactBtn.setAttribute('aria-expanded', 'false');
       }
     });
 
