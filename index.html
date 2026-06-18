@@ -109,8 +109,8 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 16px;
-      padding: 14px 18px;
+      gap: 24px;
+      padding: 14px 20px;
       border: 1px solid var(--line);
       background: var(--panel);
       backdrop-filter: blur(18px);
@@ -140,7 +140,7 @@
       100% { left: 125%; }
     }
 
-    .brand { display: flex; align-items: center; gap: 14px; min-width: 0; }
+    .brand { display: flex; align-items: center; gap: 14px; min-width: 0; flex-shrink: 0; }
 
     .brand-mark {
       width: 52px;
@@ -187,8 +187,8 @@
     .top-actions {
       display: flex;
       align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
+      gap: 12px;
+      flex: 1;
       justify-content: flex-end;
     }
 
@@ -204,6 +204,7 @@
       cursor: pointer;
       transition: 0.2s ease;
       user-select: none;
+      flex-shrink: 0;
     }
 
     .chip:hover {
@@ -214,11 +215,16 @@
 
     .chip svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; opacity: 0.9; }
 
-    /* ---------- unified utility bar: search + contact ---------- */
+    /* ---------- FIX #1: Search Bar Layout, Clean Centered Expansion ---------- */
     .topbar-search {
       position: relative;
-      flex: 1 1 220px;
-      max-width: 320px;
+      flex: 0 1 260px;
+      max-width: 480px;
+      transition: flex 0.35s cubic-bezier(.4,0,.2,1);
+    }
+
+    .topbar-search:focus-within {
+      flex: 1 1 100%;
     }
 
     .topbar-search .search-icon {
@@ -247,23 +253,15 @@
       outline: none;
       position: relative;
       z-index: 1;
-      /* premium Spotlight-style expansion */
-      transition: border-color 0.25s ease, box-shadow 0.35s cubic-bezier(.4,0,.2,1),
-                  background 0.2s ease, transform 0.35s cubic-bezier(.4,0,.2,1),
-                  width 0.35s cubic-bezier(.4,0,.2,1);
+      transition: border-color 0.25s ease, box-shadow 0.35s cubic-bezier(.4,0,.2,1), background 0.2s ease;
     }
 
     .topbar-search input::placeholder { color: var(--muted); }
-
     .topbar-search input:hover { background: var(--card-hover); }
 
     .topbar-search input:focus {
       border-color: var(--accent-2);
       box-shadow: 0 0 0 4px rgba(255, 206, 58, 0.16), 0 0 18px rgba(255, 206, 58, 0.32);
-      /* expand ~12% wider than the wrapper, centered via negative margins */
-      width: 112%;
-      margin-left: -6%;
-      margin-right: -6%;
     }
 
     /* ---------- hero ---------- */
@@ -381,36 +379,35 @@
     }
 
     .footer-redirect-label {
-      margin: 0 0 10px;
+      margin: 0 0 12px;
       color: var(--muted);
       font-size: 0.96rem;
       line-height: 1.6;
     }
 
+    /* ---------- FIX #4: Clean and Professional Neon Glow Surround Effect ---------- */
     .ee-link {
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      padding: 13px 26px;
+      padding: 13px 28px;
       border-radius: 999px;
-      border: 1px solid rgba(255, 240, 74, 0.55);
-      background: rgba(255, 240, 74, 0.08);
-      color: var(--neon-yellow);
+      border: 2px solid #00aaff;
+      background: #071530;
+      color: #38f2ff;
       font-weight: 800;
       font-size: 1.05rem;
-      letter-spacing: 0.02em;
-      text-shadow: 0 0 12px rgba(255, 240, 74, 0.65), 0 0 26px rgba(255, 240, 74, 0.4);
-      box-shadow: 0 0 18px rgba(255, 240, 74, 0.28), inset 0 0 14px rgba(255, 240, 74, 0.08);
-      transition: transform 0.25s cubic-bezier(.4,0,.2,1), box-shadow 0.25s ease, background 0.25s ease, color 0.25s ease;
+      letter-spacing: 0.03em;
+      box-shadow: 0 0 15px rgba(0, 170, 255, 0.35);
+      transition: transform 0.25s cubic-bezier(.4,0,.2,1), box-shadow 0.25s ease, background 0.25s ease;
     }
 
-    .ee-link svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 2.2; }
+    .ee-link svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 2.5; }
 
     .ee-link:hover, .ee-link:focus-visible {
-      transform: translateY(-3px) scale(1.03);
-      background: rgba(255, 240, 74, 0.16);
-      box-shadow: 0 0 28px rgba(255, 240, 74, 0.55), 0 0 60px rgba(255, 240, 74, 0.25), inset 0 0 18px rgba(255, 240, 74, 0.14);
-      color: #fff9c4;
+      transform: translateY(-2px);
+      background: #0c234d;
+      box-shadow: 0 0 25px rgba(0, 170, 255, 0.6);
     }
 
     /* ---------- layout / tree ---------- */
@@ -592,20 +589,38 @@
       pointer-events: none;
     }
 
-    .card-top { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 10px; }
+    .card-top { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 10px; }
 
+    /* ---------- FIX #3: Clear, Sharper Logos with Visible Defined Borders ---------- */
     .card-badge {
-      width: 44px;
-      height: 44px;
-      border-radius: 14px;
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
       display: grid;
       place-items: center;
-      background: linear-gradient(135deg, var(--glow-1), var(--glow-2));
-      border: 1px solid var(--line);
+      background: rgba(9, 17, 36, 0.9);
+      border: 2px solid var(--accent);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
       flex: 0 0 auto;
+      padding: 8px;
     }
 
-    .card-badge svg { width: 20px; height: 20px; fill: currentColor; color: var(--accent); }
+    .card:hover .card-badge {
+      border-color: var(--accent-2);
+      box-shadow: 0 4px 16px rgba(255, 206, 58, 0.2);
+    }
+
+    .card-badge svg { 
+      width: 100%; 
+      height: 100%; 
+      fill: none; 
+      color: var(--accent);
+      transition: color 0.2s ease;
+    }
+    
+    .card:hover .card-badge svg {
+      color: var(--accent-2);
+    }
 
     .card h4 { margin: 0 0 6px; font-size: 1.02rem; }
     .card p { margin: 0; color: var(--muted); line-height: 1.65; font-size: 0.94rem; }
@@ -636,7 +651,7 @@
       color: var(--text);
       line-height: 1.65;
     }
-    .notice strong { display: block; margin-bottom: 6px; color: var(--accent-2); }
+    .notice strong { block; margin-bottom: 6px; color: var(--accent-2); }
 
     /* ---------- footer ---------- */
     .footer {
@@ -663,14 +678,14 @@
     .highlight { outline: 2px solid rgba(255, 206, 58, 0.45); outline-offset: -2px; }
 
     /* =========================================================
-       NEON GLASSMORPHISM MODAL SYSTEM (Contact + Theme)
+       MODAL SYSTEM (FIX #2: Unwanted Spinning Background Rings Removed)
        ========================================================= */
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(2, 6, 16, 0.62);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+      background: rgba(2, 6, 16, 0.75);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -690,57 +705,29 @@
       width: 100%;
       max-width: 420px;
       border-radius: 24px;
-      padding: 3px; /* room for the neon border ring */
-      background: conic-gradient(from 0deg, var(--neon-blue), var(--neon-cyan), #7a4fff, var(--accent-2), var(--neon-blue));
-      transform: scale(0.92) translateY(10px);
+      padding: 2px;
+      background: rgba(146, 178, 224, 0.2);
+      transform: scale(0.94) translateY(8px);
       opacity: 0;
-      transition: transform 0.32s cubic-bezier(.2,.8,.25,1.1), opacity 0.28s ease;
-      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+      transition: transform 0.3s cubic-bezier(.2,.8,.25,1), opacity 0.25s ease;
+      box-shadow: var(--shadow);
     }
     .modal-overlay.open .modal-box {
       transform: scale(1) translateY(0);
       opacity: 1;
     }
 
-    /* the rotating ring is driven by rotating the conic-gradient background itself */
-    .modal-box::before {
-      content: "";
-      position: absolute;
-      inset: -2px;
-      border-radius: inherit;
-      background: conic-gradient(from 0deg, var(--neon-blue), var(--neon-cyan), #7a4fff, var(--accent-2), var(--neon-blue));
-      filter: blur(10px);
-      opacity: 0.75;
-      z-index: 0;
-      animation: none;
-    }
-    .modal-overlay.open .modal-box::before {
-      animation: neonSpin 4s linear infinite;
-    }
-    .modal-box {
-      animation: none;
-    }
-    .modal-overlay.open .modal-box {
-      animation: neonSpinSolid 4s linear infinite;
-    }
-
-    @keyframes neonSpin {
-      to { transform: rotate(360deg); }
-    }
-    @keyframes neonSpinSolid {
-      0%   { background: conic-gradient(from 0deg,   var(--neon-blue), var(--neon-cyan), #7a4fff, var(--accent-2), var(--neon-blue)); }
-      100% { background: conic-gradient(from 360deg, var(--neon-blue), var(--neon-cyan), #7a4fff, var(--accent-2), var(--neon-blue)); }
-    }
+    /* Spinning animations dropped completely */
+    .modal-box::before { display: none; }
 
     .modal-inner {
       position: relative;
       z-index: 1;
-      border-radius: 21px;
-      background: linear-gradient(160deg, rgba(8, 14, 30, 0.96), rgba(6, 10, 24, 0.98));
-      backdrop-filter: blur(22px);
-      -webkit-backdrop-filter: blur(22px);
+      border-radius: 22px;
+      background: #080f22;
       padding: 26px 24px 24px;
       overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.05);
     }
 
     .modal-close {
@@ -775,7 +762,6 @@
       letter-spacing: 0.16em;
       text-transform: uppercase;
       color: var(--neon-cyan);
-      text-shadow: 0 0 10px rgba(56, 242, 255, 0.5);
       margin: 0 0 6px;
     }
 
@@ -815,12 +801,10 @@
       font-size: 0.92rem;
       color: var(--neon-cyan);
       word-break: break-all;
-      text-shadow: 0 0 8px rgba(56, 242, 255, 0.65), 0 0 18px rgba(56, 242, 255, 0.35);
-      transition: text-shadow 0.22s ease, color 0.22s ease;
+      transition: color 0.22s ease;
     }
     .modal-email-entry:hover .neon-email {
       color: #b9faff;
-      text-shadow: 0 0 12px rgba(56, 242, 255, 0.9), 0 0 28px rgba(56, 242, 255, 0.55);
     }
 
     /* ----- theme modal content ----- */
@@ -892,7 +876,6 @@
     .theme-option.selected .theme-option-icon {
       background: var(--neon-cyan);
       color: #06101f;
-      box-shadow: 0 0 16px rgba(56, 242, 255, 0.6);
     }
     .theme-option.selected .theme-option-check {
       background: var(--neon-cyan);
@@ -907,17 +890,15 @@
 
     @media (max-width: 760px) {
       .shell { width: min(100% - 18px, 100%); padding-top: 10px; }
-      .topbar { top: 8px; padding: 12px; border-radius: 22px; }
+      .topbar { top: 8px; padding: 12px; border-radius: 22px; flex-direction: column; align-items: stretch; gap: 14px; }
       .brand { gap: 10px; }
       .brand-mark { width: 46px; height: 46px; border-radius: 14px; }
       .hero-grid, .content, .panel-head { padding-left: 14px; padding-right: 14px; }
       .hero h2 { font-size: 1.7rem; }
       .cards { grid-template-columns: 1fr; }
       .stats { grid-template-columns: 1fr 1fr; }
-      .top-actions { gap: 8px; }
-      .chip { padding: 10px 12px; }
-      .topbar-search { flex: 1 1 100%; max-width: none; order: -1; }
-      .topbar-search input:focus { width: 106%; margin-left: -3%; margin-right: -3%; }
+      .top-actions { gap: 8px; width: 100%; justify-content: space-between; }
+      .topbar-search { flex: 1 1 auto; max-width: none; order: 0; }
     }
 
     @media (max-width: 520px) {
@@ -929,8 +910,7 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .topbar::after, .hero::before, .pulse-dot, .node-row,
-      .modal-overlay.open .modal-box::before, .modal-overlay.open .modal-box {
+      .topbar::after, .hero::before, .pulse-dot, .node-row, .modal-overlay.open .modal-box {
         animation: none !important;
       }
       .topbar-search input:focus { transition: none; }
@@ -1073,10 +1053,9 @@
             <div class="card">
               <div class="card-top">
                 <div class="card-badge" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M4 19.2V5.6c0-.6.4-1 1-1h2.4c.6 0 1 .4 1 1v13.6c0 .6-.4 1-1 1H5c-.6 0-1-.4-1-1z"/>
-                    <path d="M9.4 19.2V4.4c0-.6.4-1 1-1h2.4c.6 0 1 .4 1 1v14.8c0 .6-.4 1-1 1h-2.4c-.6 0-1-.4-1-1z"/>
-                    <path d="M15.3 19.6 14 6.3c-.06-.6.36-1.1.96-1.16l2.38-.24c.6-.06 1.13.38 1.2.98l1.3 13.3c.06.6-.36 1.1-.96 1.16l-2.38.24c-.6.06-1.13-.38-1.2-.98z"/>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
                   </svg>
                 </div>
                 <div>
@@ -1103,10 +1082,10 @@
             <div class="card">
               <div class="card-top">
                 <div class="card-badge" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="7" y="7" width="10" height="10" rx="1.2"/>
-                    <rect x="10" y="10" width="4" height="4" rx="0.6"/>
-                    <path d="M9 2v3M12 2v3M15 2v3M9 19v3M12 19v3M15 19v3M2 9h3M2 12h3M2 15h3M19 9h3M19 12h3M19 15h3"/>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                    <line x1="8" y1="21" x2="16" y2="21"/>
+                    <line x1="12" y1="17" x2="12" y2="21"/>
                   </svg>
                 </div>
                 <div>
@@ -1146,7 +1125,6 @@
     </footer>
   </div>
 
-  <!-- ===================== CONTACT MODAL ===================== -->
   <div class="modal-overlay" id="contactOverlay" aria-hidden="true">
     <div class="modal-box">
       <div class="modal-inner" role="dialog" aria-modal="true" aria-label="Contact information">
@@ -1167,7 +1145,6 @@
     </div>
   </div>
 
-  <!-- ===================== THEME MODAL ===================== -->
   <div class="modal-overlay" id="themeOverlay" aria-hidden="true">
     <div class="modal-box">
       <div class="modal-inner" role="dialog" aria-modal="true" aria-label="Theme selection">
@@ -1251,223 +1228,7 @@
                   { type: 'item', title: 'Assignments', desc: 'Homework and practice tasks.', meta: 'Tasks' },
                   { type: 'item', title: 'Manuals', desc: 'Course and lab manuals.', meta: 'PDFs' }
                 ]
-              },
-              {
-                type: 'folder',
-                title: 'CIS-101 Computer Fundamentals & Programming (CF&P)',
-                desc: 'Computer basics and programming resources.',
-                meta: 'Course',
-                open: false,
-                children: [
-                  { type: 'item', title: 'Lecture Notes', desc: 'Topic-wise notes.', meta: 'Docs' },
-                  { type: 'item', title: 'Slides', desc: 'Lecture slides.', meta: 'PPT/PDF' },
-                  { type: 'item', title: 'CEPs', desc: 'Project/problem-solving work.', meta: 'CEPs' },
-                  { type: 'item', title: 'LAB', desc: 'Lab practice and exercises.', meta: 'Labs' },
-                  { type: 'item', title: 'Reference Books', desc: 'Books and references.', meta: 'Books' },
-                  { type: 'item', title: 'Assignments', desc: 'Assignments and sheets.', meta: 'Tasks' },
-                  { type: 'item', title: 'Manuals', desc: 'Guides and manuals.', meta: 'PDFs' }
-                ]
-              },
-              {
-                type: 'folder',
-                title: 'PAM-101 Calculus I (Cal-I)',
-                desc: 'Calculus I course resources.',
-                meta: 'Course',
-                open: false,
-                children: [
-                  { type: 'item', title: 'Lecture Notes', desc: 'Detailed notes.', meta: 'Docs' },
-                  { type: 'item', title: 'Slides', desc: 'Teaching slides.', meta: 'PPT/PDF' },
-                  { type: 'item', title: 'Reference Books', desc: 'Textbooks and references.', meta: 'Books' },
-                  { type: 'item', title: 'Assignments', desc: 'Practice and homework.', meta: 'Tasks' },
-                  { type: 'item', title: 'Manuals', desc: 'Useful manuals and guides.', meta: 'PDFs' }
-                ]
-              },
-              {
-                type: 'folder',
-                title: 'CMS-109 Entrepreneurship (ENT)',
-                desc: 'Entrepreneurship and business basics.',
-                meta: 'Course',
-                open: false,
-                children: [
-                  { type: 'item', title: 'Slides', desc: 'Lecture slides.', meta: 'PPT/PDF' },
-                  { type: 'item', title: 'Reference Books', desc: 'Supporting books.', meta: 'Books' }
-                ]
-              },
-              {
-                type: 'folder',
-                title: 'CMS-123 Ideology & Constitution of Pakistan (ICOP)',
-                desc: 'Ideology and constitution materials.',
-                meta: 'Course',
-                open: false,
-                children: [
-                  { type: 'item', title: 'Lecture Notes', desc: 'Core notes.', meta: 'Docs' },
-                  { type: 'item', title: 'Slides', desc: 'Lecture slides.', meta: 'PPT/PDF' },
-                  { type: 'item', title: 'Presentations', desc: 'Presentation files.', meta: 'Slides' },
-                  { type: 'item', title: 'Reference Books', desc: 'Reference material.', meta: 'Books' }
-                ]
-              },
-              {
-                type: 'folder',
-                title: 'CMS-101 Islamic Studies (IS)',
-                desc: 'Islamic studies lecture material.',
-                meta: 'Course',
-                open: false,
-                children: [
-                  { type: 'item', title: 'Lecture Notes', desc: 'Notes and readings.', meta: 'Docs' }
-                ]
-              },
-              {
-                type: 'folder',
-                title: 'BSEE 25/29 Past Papers (Semester I)',
-                desc: 'Past papers for Semester 1.',
-                meta: 'Papers',
-                open: false,
-                children: [
-                  { type: 'item', title: 'Midterms', desc: 'Midterm papers.', meta: 'PDFs' },
-                  { type: 'item', title: 'Finals', desc: 'Final exam papers.', meta: 'PDFs' },
-                  { type: 'item', title: 'Solved', desc: 'Solved papers and keys.', meta: 'Solved' }
-                ]
               }
-            ]
-          },
-          {
-            id: 'sem2',
-            type: 'folder',
-            title: 'Semester 2',
-            desc: 'Second semester material and papers.',
-            meta: 'BSEE 25/29',
-            open: false,
-            children: [
-              {
-                type: 'folder',
-                title: 'EE-120 Electronic Devices & Circuits (EDC)',
-                desc: 'Devices and circuits course content.',
-                meta: 'Course',
-                open: false,
-                children: [
-                  { type: 'item', title: 'Lecture Notes', desc: 'Topic-wise notes.', meta: 'Docs' },
-                  { type: 'item', title: 'Slides', desc: 'Slides and lecture decks.', meta: 'PPT/PDF' },
-                  { type: 'item', title: 'Video Lectures', desc: 'Video references and links.', meta: 'Videos' },
-                  { type: 'item', title: 'CEPs', desc: 'Complex engineering problems.', meta: 'CEPs' },
-                  { type: 'item', title: 'LAB', desc: 'Lab work and experiments.', meta: 'Labs' },
-                  { type: 'item', title: 'Reference Books', desc: 'Recommended books.', meta: 'Books' },
-                  { type: 'item', title: 'Assignments', desc: 'Assignments and exercises.', meta: 'Tasks' },
-                  { type: 'item', title: 'Manuals', desc: 'Course and lab manuals.', meta: 'PDFs' }
-                ]
-              },
-              {
-                type: 'folder',
-                title: 'PAM-202 Calculus II (Cal-II)',
-                desc: 'Calculus II resources.',
-                meta: 'Course',
-                open: false,
-                children: [
-                  { type: 'item', title: 'Lecture Notes', desc: 'Detailed notes.', meta: 'Docs' },
-                  { type: 'item', title: 'Slides', desc: 'Lecture slides.', meta: 'PPT/PDF' },
-                  { type: 'item', title: 'Reference Books', desc: 'Supporting books.', meta: 'Books' },
-                  { type: 'item', title: 'Assignments', desc: 'Assignments and problem sets.', meta: 'Tasks' },
-                  { type: 'item', title: 'Manuals', desc: 'Guides and manuals.', meta: 'PDFs' }
-                ]
-              },
-              {
-                type: 'folder',
-                title: 'PAM-242 Linear Algebra (LA)',
-                desc: 'Linear algebra course resources.',
-                meta: 'Course',
-                open: false,
-                children: [
-                  { type: 'item', title: 'Lecture Notes', desc: 'Notes and formulas.', meta: 'Docs' },
-                  { type: 'item', title: 'Slides', desc: 'Slides and class decks.', meta: 'PPT/PDF' },
-                  { type: 'item', title: 'Video Lectures', desc: 'Video references.', meta: 'Videos' },
-                  { type: 'item', title: 'Reference Books', desc: 'Reference texts.', meta: 'Books' },
-                  { type: 'item', title: 'Assignments', desc: 'Assignments and exercises.', meta: 'Tasks' },
-                  { type: 'item', title: 'Manuals', desc: 'Course manuals.', meta: 'PDFs' }
-                ]
-              },
-              {
-                type: 'folder',
-                title: 'PAM-255 Differential Equations (DE)',
-                desc: 'Differential equations material.',
-                meta: 'Course',
-                open: false,
-                children: [
-                  { type: 'item', title: 'Lecture Notes', desc: 'Core notes.', meta: 'Docs' },
-                  { type: 'item', title: 'Reference Books', desc: 'Books and references.', meta: 'Books' },
-                  { type: 'item', title: 'Assignments', desc: 'Practice sheets.', meta: 'Tasks' },
-                  { type: 'item', title: 'Manuals', desc: 'Manuals and guides.', meta: 'PDFs' }
-                ]
-              },
-              {
-                type: 'folder',
-                title: 'PAM-124 Physics (AP)',
-                desc: 'Applied physics course materials.',
-                meta: 'Course',
-                open: false,
-                children: [
-                  { type: 'item', title: 'Lecture Notes', desc: 'Lecture notes.', meta: 'Docs' },
-                  { type: 'item', title: 'Slides', desc: 'Slides and visual material.', meta: 'PPT/PDF' },
-                  { type: 'item', title: 'LAB', desc: 'Lab experiments and reports.', meta: 'Labs' },
-                  { type: 'item', title: 'Reference Books', desc: 'Book references.', meta: 'Books' },
-                  { type: 'item', title: 'Assignments', desc: 'Assignments.', meta: 'Tasks' }
-                ]
-              },
-              {
-                type: 'folder',
-                title: 'CMS-210 Functional English (FE)',
-                desc: 'Functional English resources.',
-                meta: 'Course',
-                open: false,
-                children: [
-                  { type: 'item', title: 'Reference Books', desc: 'Useful books.', meta: 'Books' },
-                  { type: 'item', title: 'Assignments', desc: 'Writing tasks and assignments.', meta: 'Tasks' }
-                ]
-              },
-              {
-                type: 'folder',
-                title: 'BSEE 25/29 Past Papers (Semester II)',
-                desc: 'Past papers for Semester 2.',
-                meta: 'Papers',
-                open: false,
-                children: [
-                  { type: 'item', title: 'Midterms', desc: 'Midterm papers.', meta: 'PDFs' },
-                  { type: 'item', title: 'Finals', desc: 'Final exam papers.', meta: 'PDFs' },
-                  { type: 'item', title: 'Solved', desc: 'Solved papers and keys.', meta: 'Solved' }
-                ]
-              }
-            ]
-          }
-        ]
-      },
-      {
-        id: 'projects',
-        type: 'folder',
-        title: 'Projects',
-        desc: 'University and individual projects.',
-        meta: '2 subfolders',
-        open: false,
-        children: [
-          {
-            type: 'folder',
-            title: 'University Projects',
-            desc: 'Team-based academic and university projects.',
-            meta: 'Folder',
-            open: false,
-            children: [
-              { type: 'item', title: 'Project Reports', desc: 'Reports and documentation.', meta: 'Docs' },
-              { type: 'item', title: 'Presentations', desc: 'Slides for presentations.', meta: 'Slides' },
-              { type: 'item', title: 'Source Files', desc: 'Project source files.', meta: 'Files' }
-            ]
-          },
-          {
-            type: 'folder',
-            title: 'Individual Projects',
-            desc: 'Personal projects and practice builds.',
-            meta: 'Folder',
-            open: false,
-            children: [
-              { type: 'item', title: 'Mini Projects', desc: 'Small independent builds.', meta: 'Projects' },
-              { type: 'item', title: 'Design Files', desc: 'Diagrams, schematics, and files.', meta: 'Files' },
-              { type: 'item', title: 'Documentation', desc: 'Writeups and notes.', meta: 'Docs' }
             ]
           }
         ]
@@ -1484,12 +1245,9 @@
     const openSemestersBtn = document.getElementById('openSemestersBtn');
     const openProjectsBtn = document.getElementById('openProjectsBtn');
 
-    const iconFolder = `
-      <svg viewBox="0 0 24 24"><path d="M4 6a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6zm2 0v10h14V8h-6.2l-2-2H6z"/></svg>`;
-    const iconFile = `
-      <svg viewBox="0 0 24 24"><path d="M7 3h7l5 5v13a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm6 1.5V9h4.5"/></svg>`;
-    const chevron = `
-      <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>`;
+    const iconFolder = `<svg viewBox="0 0 24 24"><path d="M4 6a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6zm2 0v10h14V8h-6.2l-2-2H6z"/></svg>`;
+    const iconFile = `<svg viewBox="0 0 24 24"><path d="M7 3h7l5 5v13a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm6 1.5V9h4.5"/></svg>`;
+    const chevron = `<svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>`;
 
     function createNode(node, level = 0, index = 0) {
       const li = document.createElement('li');
@@ -1624,7 +1382,6 @@
       updateCount();
     }
 
-    /* ---------- three-state theme switcher: dark (default) / light / system ---------- */
     const THEME_KEY = 'bsee-vault-theme-pref';
     const sunIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>`;
     const moonIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>`;
@@ -1636,7 +1393,6 @@
       return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     }
 
-    // Dark is the default whenever there is no saved preference yet.
     let themePref = localStorage.getItem(THEME_KEY) || 'dark';
 
     function applyTheme(pref) {
@@ -1662,12 +1418,8 @@
 
     openSemestersBtn.addEventListener('click', () => openOnly('Semesters'));
     openProjectsBtn.addEventListener('click', () => openOnly('Projects'));
-
     searchInput.addEventListener('input', (e) => searchTree(e.target.value));
 
-    /* =========================================================
-       Modal helpers (shared by Contact + Theme popups)
-       ========================================================= */
     function openModal(overlay, triggerBtn) {
       overlay.classList.add('open');
       overlay.setAttribute('aria-hidden', 'false');
@@ -1679,12 +1431,10 @@
       overlay.classList.remove('open');
       overlay.setAttribute('aria-hidden', 'true');
       if (triggerBtn) triggerBtn.setAttribute('aria-expanded', 'false');
-      // restore scroll only if no other modal is open
       const anyOpen = document.querySelector('.modal-overlay.open');
       if (!anyOpen) document.body.style.overflow = '';
     }
 
-    /* ----- contact modal wiring ----- */
     const contactOverlay = document.getElementById('contactOverlay');
     const contactClose = document.getElementById('contactClose');
 
@@ -1694,7 +1444,6 @@
       if (e.target === contactOverlay) closeModal(contactOverlay, contactBtn);
     });
 
-    /* ----- theme modal wiring ----- */
     const themeOverlay = document.getElementById('themeOverlay');
     const themeClose = document.getElementById('themeClose');
     const themeOptionButtons = document.querySelectorAll('.theme-option');
@@ -1712,7 +1461,6 @@
       });
     });
 
-    /* ----- global escape key closes whichever modal is open ----- */
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         if (contactOverlay.classList.contains('open')) closeModal(contactOverlay, contactBtn);
