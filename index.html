@@ -174,7 +174,6 @@
             opacity: 0;
         }
 
-        /* full‑screen animated network background (restored) */
         #bgCanvas {
             position: fixed;
             inset: 0;
@@ -203,7 +202,6 @@
             z-index: 1;
         }
 
-        /* topbar with a bit more breathing room */
         .topbar {
             position: sticky;
             top: 4px;
@@ -371,9 +369,9 @@
         }
         .chip svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2; opacity: 0.9; }
 
-        /* hero */
+        /* hero with comfortable gap */
         .hero {
-            margin-top: 4px;
+            margin-top: 12px;
             border: 1px solid var(--line);
             background: linear-gradient(160deg, rgba(0, 234, 255, 0.06) 0%, rgba(155, 92, 255, 0.04) 30%, rgba(255, 46, 230, 0.03) 60%, rgba(0, 234, 255, 0.05) 100%);
             backdrop-filter: blur(20px);
@@ -510,6 +508,7 @@
         }
         .section-header p { color: var(--muted); font-size: 0.9rem; margin: 0; line-height: 1.5; }
 
+        /* slightly larger folder containers */
         .sub-section {
             border: 1px solid var(--line);
             background: var(--panel);
@@ -518,19 +517,19 @@
             box-shadow: var(--shadow);
             overflow: hidden;
             width: 100%;
-            max-width: 680px;
+            max-width: 740px; /* increased from 680px */
         }
-        .sub-section-head { padding: 18px 22px 14px; border-bottom: 1px solid var(--line); text-align: center; }
-        .sub-section-head h3 { margin: 0 0 5px; font-family: var(--font-display); font-size: 1.05rem; letter-spacing: 0.02em; color: var(--accent); text-shadow: 0 0 10px rgba(0, 234, 255, 0.3); }
-        .sub-section-head p { margin: 0; color: var(--muted); font-size: 0.87rem; }
-        .sub-section-body { padding: 18px 22px; display: flex; justify-content: center; }
+        .sub-section-head { padding: 20px 24px 14px; border-bottom: 1px solid var(--line); text-align: center; }
+        .sub-section-head h3 { margin: 0 0 5px; font-family: var(--font-display); font-size: 1.1rem; letter-spacing: 0.02em; color: var(--accent); text-shadow: 0 0 10px rgba(0, 234, 255, 0.3); }
+        .sub-section-head p { margin: 0; color: var(--muted); font-size: 0.89rem; }
+        .sub-section-body { padding: 20px 24px; display: flex; justify-content: center; }
 
-        .cards-row { display: grid; grid-template-columns: 1fr; gap: 14px; width: 100%; max-width: 500px; }
+        .cards-row { display: grid; grid-template-columns: 1fr; gap: 14px; width: 100%; max-width: 540px; }
         .card {
             border: 1px solid var(--line);
             background: var(--card);
-            border-radius: 18px;
-            padding: 18px 20px;
+            border-radius: 20px;
+            padding: 20px 22px;
             transition: 0.2s ease;
             position: relative;
             overflow: hidden;
@@ -539,20 +538,19 @@
         .card:hover { background: var(--card-hover); transform: translateY(-2px); box-shadow: 0 0 0 1px var(--accent) inset, 0 0 22px rgba(0, 234, 255, 0.14); }
         .card::after { content: ""; position: absolute; inset: auto -25px -25px auto; width: 100px; height: 100px; border-radius: 50%; background: radial-gradient(circle, var(--glow-1), transparent 70%); pointer-events: none; }
         .card-top { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 10px; justify-content: center; text-align: left; }
-        .card-badge { width: 42px; height: 42px; border-radius: 13px; display: grid; place-items: center; background: linear-gradient(135deg, var(--glow-1), var(--glow-2)); border: 1px solid var(--line); flex: 0 0 auto; }
-        .card-badge svg { width: 19px; height: 19px; fill: currentColor; color: var(--accent); }
-        .card h4 { margin: 0 0 5px; font-family: var(--font-display); font-size: 0.95rem; }
-        .card p { margin: 0; color: var(--muted); line-height: 1.55; font-size: 0.86rem; }
+        .card-badge { width: 44px; height: 44px; border-radius: 13px; display: grid; place-items: center; background: linear-gradient(135deg, var(--glow-1), var(--glow-2)); border: 1px solid var(--line); flex: 0 0 auto; }
+        .card-badge svg { width: 20px; height: 20px; fill: currentColor; color: var(--accent); }
+        .card h4 { margin: 0 0 5px; font-family: var(--font-display); font-size: 1rem; }
+        .card p { margin: 0; color: var(--muted); line-height: 1.55; font-size: 0.88rem; }
         .card-links { margin-top: 14px; display: flex; gap: 9px; flex-wrap: wrap; justify-content: center; }
         .mini-link {
-            display: inline-flex; align-items: center; gap: 7px; padding: 9px 13px; border-radius: 11px;
+            display: inline-flex; align-items: center; gap: 7px; padding: 10px 14px; border-radius: 12px;
             border: 1px solid var(--line); background: var(--panel-2); color: var(--text); cursor: pointer; transition: 0.2s ease;
-            font-family: var(--font-mono); font-size: 0.8rem;
+            font-family: var(--font-mono); font-size: 0.82rem;
         }
         .mini-link:hover { background: var(--card-hover); box-shadow: 0 0 0 1px var(--accent-2) inset, 0 0 14px rgba(255, 46, 230, 0.2); }
-        .mini-link svg { width: 13px; height: 13px; fill: currentColor; }
+        .mini-link svg { width: 14px; height: 14px; fill: currentColor; }
 
-        /* footer with a small bottom space */
         .footer {
             width: min(1400px, calc(100% - 32px));
             margin: 28px auto 8px;
@@ -641,6 +639,7 @@
         @media (max-width: 1120px) {
             .sem-grid { grid-template-columns: repeat(2, 1fr); }
             .stats-strip { grid-template-columns: repeat(2, 1fr); }
+            .sub-section { max-width: 100%; }
         }
         @media (max-width: 760px) {
             .shell { width: min(100% - 16px, 100%); }
@@ -655,9 +654,9 @@
             .stats-strip { grid-template-columns: 1fr 1fr; gap: 8px; }
             .chip { padding: 8px 10px; font-size: 0.74rem; }
             .chip .chip-label { display: none; }
-            .sub-section { max-width: 100%; }
             .sub-section-body { padding: 14px; }
             .core-modules { gap: 18px; margin-top: 20px; }
+            .cards-row { max-width: 100%; }
         }
         @media (max-width: 520px) {
             .stats-strip { grid-template-columns: 1fr 1fr; }
@@ -677,7 +676,6 @@
     </style>
 </head>
 <body data-theme="dark">
-    <!-- Full‑screen network background restored -->
     <canvas id="bgCanvas" aria-hidden="true"></canvas>
     <div class="bg-vignette" aria-hidden="true"></div>
     <div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
@@ -807,7 +805,7 @@
         <p class="footer-copyright">© 2026 Muhammad Uzair &amp; Asad Javed. All rights reserved.</p>
     </footer>
 
-    <!-- Modals -->
+    <!-- Modals unchanged -->
     <div class="modal-overlay" id="contactModalOverlay" aria-hidden="true">
         <div class="modal-card" role="dialog" aria-label="Contact information" aria-modal="true">
             <button class="modal-close" id="contactModalClose" type="button" aria-label="Close">×</button>
@@ -868,6 +866,7 @@
     </div>
 
     <script>
+        // (Same data and logic as before, unchanged)
         const SEM_INFO_ALL = [
             { n:1, title:'Semester 1', desc:'Cal-I, CA-I, CF&P, ENT, ICOP, Islamic Studies', locked:false },
             { n:2, title:'Semester 2', desc:'EDC, Cal-II, Linear Algebra, DE, Physics, FE', locked:false },
@@ -927,7 +926,6 @@
 
         document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeAllModals(); });
 
-        // Theme system
         const THEME_KEY='bsee-vault-theme-pref';
         const sunIconSvg=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3"/></svg>`;
         const moonIconSvg=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>`;
@@ -952,7 +950,7 @@
         if(window.matchMedia){ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{ if(themePref==='system') applyTheme('system'); }); }
         applyTheme(themePref);
 
-        // Full‑screen animated network background (restored)
+        // Full‑screen network background
         (function fullscreenNetwork(){
             const canvas = document.getElementById('bgCanvas');
             const ctx = canvas.getContext('2d');
@@ -960,21 +958,18 @@
             let w, h, dpr, particles = [];
             let mouse = { x: -9999, y: -9999 };
             let colors = { accent: '#00eaff', accent2: '#ff2ee6' };
-
             function readColors(){
                 const cs = getComputedStyle(document.body);
                 colors.accent = cs.getPropertyValue('--accent').trim() || colors.accent;
                 colors.accent2 = cs.getPropertyValue('--accent-2').trim() || colors.accent2;
             }
             window.__updateBgColors = readColors;
-
             function hexToRgb(hex){
                 const m = hex.replace('#','');
                 const full = m.length === 3 ? m.split('').map(c=>c+c).join('') : m;
                 const num = parseInt(full, 16);
                 return { r: (num>>16) & 255, g: (num>>8) & 255, b: num & 255 };
             }
-
             function resize(){
                 dpr = Math.min(window.devicePixelRatio || 1, 2);
                 w = window.innerWidth;
@@ -993,14 +988,12 @@
                     r: 0.9 + Math.random() * 1.3
                 }));
             }
-
             function step(){
                 readColors();
                 const accentRgb = hexToRgb(colors.accent);
                 const accent2Rgb = hexToRgb(colors.accent2);
                 ctx.clearRect(0, 0, w, h);
                 const linkDist = Math.min(140, Math.max(90, w / 10));
-
                 particles.forEach(p => {
                     if(!reduceMotion){
                         const dx = p.x - mouse.x, dy = p.y - mouse.y, dist = Math.sqrt(dx*dx + dy*dy);
@@ -1009,19 +1002,16 @@
                             p.vx += (dx / dist) * force;
                             p.vy += (dy / dist) * force;
                         }
-                        p.vx *= 0.989;
-                        p.vy *= 0.989;
+                        p.vx *= 0.989; p.vy *= 0.989;
                         const speed = Math.sqrt(p.vx*p.vx + p.vy*p.vy);
                         if(speed > 0.8){ p.vx = (p.vx/speed)*0.8; p.vy = (p.vy/speed)*0.8; }
-                        p.x += p.vx;
-                        p.y += p.vy;
+                        p.x += p.vx; p.y += p.vy;
                         if(p.x < -20) p.x = w + 20;
                         if(p.x > w + 20) p.x = -20;
                         if(p.y < -20) p.y = h + 20;
                         if(p.y > h + 20) p.y = -20;
                     }
                 });
-
                 for(let i = 0; i < particles.length; i++){
                     for(let j = i + 1; j < particles.length; j++){
                         const a = particles[i], b = particles[j];
@@ -1041,7 +1031,6 @@
                         }
                     }
                 }
-
                 particles.forEach(p => {
                     ctx.beginPath();
                     ctx.fillStyle = `rgba(${accentRgb.r}, ${accentRgb.g}, ${accentRgb.b}, 0.78)`;
@@ -1051,20 +1040,17 @@
                     ctx.fill();
                     ctx.shadowBlur = 0;
                 });
-
                 if(!reduceMotion) requestAnimationFrame(step);
             }
-
             window.addEventListener('resize', resize, { passive: true });
             window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; }, { passive: true });
             window.addEventListener('mouseleave', () => { mouse.x = -9999; mouse.y = -9999; });
-
             resize();
             readColors();
             step();
         })();
 
-        // Hero-confined particle network (kept)
+        // Hero‑confined particles
         (function heroParticles(){
             const canvas=document.getElementById('heroCanvas');
             const ctx=canvas.getContext('2d');
@@ -1073,21 +1059,18 @@
             let w,h,dpr,particles=[];
             let mouse={x:-9999,y:-9999};
             let colors={accent:'#00eaff',accent2:'#ff2ee6'};
-
             function readColors(){
                 const cs=getComputedStyle(document.body);
                 colors.accent=cs.getPropertyValue('--accent').trim()||colors.accent;
                 colors.accent2=cs.getPropertyValue('--accent-2').trim()||colors.accent2;
             }
             window.__updateHeroColors=readColors;
-
             function hexToRgb(hex){
                 const m=hex.replace('#','');
                 const full=m.length===3?m.split('').map(c=>c+c).join(''):m;
                 const num=parseInt(full,16);
                 return {r:(num>>16)&255,g:(num>>8)&255,b:num&255};
             }
-
             function resize(){
                 const rect=hero.getBoundingClientRect();
                 dpr=Math.min(window.devicePixelRatio||1,2);
@@ -1107,14 +1090,12 @@
                     r:0.8+Math.random()*1.2
                 }));
             }
-
             function step(){
                 readColors();
                 const accentRgb=hexToRgb(colors.accent);
                 const accent2Rgb=hexToRgb(colors.accent2);
                 ctx.clearRect(0,0,w,h);
                 const linkDist=Math.min(120,Math.max(70,w/12));
-
                 particles.forEach(p=>{
                     if(!reduceMotion){
                         const dx=p.x-mouse.x, dy=p.y-mouse.y, dist=Math.sqrt(dx*dx+dy*dy);
@@ -1127,7 +1108,6 @@
                         if(p.y<-10)p.y=h+10; if(p.y>h+10)p.y=-10;
                     }
                 });
-
                 for(let i=0;i<particles.length;i++){
                     for(let j=i+1;j<particles.length;j++){
                         const a=particles[i],b=particles[j];
@@ -1144,17 +1124,14 @@
                         }
                     }
                 }
-
                 particles.forEach(p=>{
                     ctx.beginPath();
                     ctx.fillStyle=`rgba(${accentRgb.r},${accentRgb.g},${accentRgb.b},0.72)`;
                     ctx.shadowColor=colors.accent; ctx.shadowBlur=4;
                     ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill(); ctx.shadowBlur=0;
                 });
-
                 if(!reduceMotion) requestAnimationFrame(step);
             }
-
             window.addEventListener('resize',resize,{passive:true});
             hero.addEventListener('mousemove',e=>{
                 const rect=hero.getBoundingClientRect();
@@ -1162,7 +1139,6 @@
                 mouse.y=e.clientY-rect.top;
             },{passive:true});
             hero.addEventListener('mouseleave',()=>{ mouse.x=-9999; mouse.y=-9999; });
-
             resize();
             readColors();
             step();
