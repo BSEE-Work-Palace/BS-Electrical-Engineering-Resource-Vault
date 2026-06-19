@@ -174,6 +174,16 @@
             opacity: 0;
         }
 
+        /* full‑screen animated network background (restored) */
+        #bgCanvas {
+            position: fixed;
+            inset: 0;
+            z-index: -3;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
         .bg-vignette {
             position: fixed;
             inset: 0;
@@ -193,10 +203,10 @@
             z-index: 1;
         }
 
-        /* topbar with tiny top gap */
+        /* topbar with a bit more breathing room */
         .topbar {
             position: sticky;
-            top: 2px; /* tiny 1mm gap from viewport top */
+            top: 4px;
             z-index: 20;
             display: flex;
             align-items: center;
@@ -361,9 +371,9 @@
         }
         .chip svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2; opacity: 0.9; }
 
-        /* hero with tiny margin-top */
+        /* hero */
         .hero {
-            margin-top: 4px; /* tiny gap below topbar */
+            margin-top: 4px;
             border: 1px solid var(--line);
             background: linear-gradient(160deg, rgba(0, 234, 255, 0.06) 0%, rgba(155, 92, 255, 0.04) 30%, rgba(255, 46, 230, 0.03) 60%, rgba(0, 234, 255, 0.05) 100%);
             backdrop-filter: blur(20px);
@@ -542,9 +552,10 @@
         .mini-link:hover { background: var(--card-hover); box-shadow: 0 0 0 1px var(--accent-2) inset, 0 0 14px rgba(255, 46, 230, 0.2); }
         .mini-link svg { width: 13px; height: 13px; fill: currentColor; }
 
+        /* footer with a small bottom space */
         .footer {
             width: min(1400px, calc(100% - 32px));
-            margin: 28px auto 0;
+            margin: 28px auto 8px;
             padding: 18px 20px;
             color: var(--muted);
             text-align: center;
@@ -633,7 +644,7 @@
         }
         @media (max-width: 760px) {
             .shell { width: min(100% - 16px, 100%); }
-            .topbar { padding: 10px 12px; border-radius: 20px; flex-wrap: wrap; top: 2px; }
+            .topbar { padding: 10px 12px; border-radius: 20px; flex-wrap: wrap; top: 4px; }
             .brand { gap: 9px; flex: 1 1 auto; }
             .brand-mark { width: 38px; height: 38px; border-radius: 12px; }
             .topbar-search { flex: 1 1 100%; max-width: none; order: 3; margin: 5px 0 0; }
@@ -666,6 +677,8 @@
     </style>
 </head>
 <body data-theme="dark">
+    <!-- Full‑screen network background restored -->
+    <canvas id="bgCanvas" aria-hidden="true"></canvas>
     <div class="bg-vignette" aria-hidden="true"></div>
     <div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
     <div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
@@ -932,13 +945,126 @@
             localStorage.setItem(THEME_KEY,pref);
             updateThemeOptionUI();
             if(window.__updateHeroColors) window.__updateHeroColors();
+            if(window.__updateBgColors) window.__updateBgColors();
         }
         function updateThemeOptionUI(){ themeOptions.forEach(opt=>{ opt.classList.toggle('active', opt.getAttribute('data-theme-val')===themePref); }); }
         themeOptions.forEach(opt=>{ opt.addEventListener('click',()=>{ applyTheme(opt.getAttribute('data-theme-val')); setTimeout(()=>closeModal(themeModalOverlay),200); }); });
         if(window.matchMedia){ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{ if(themePref==='system') applyTheme('system'); }); }
         applyTheme(themePref);
 
-        // Hero-confined particle network
+        // Full‑screen animated network background (restored)
+        (function fullscreenNetwork(){
+            const canvas = document.getElementById('bgCanvas');
+            const ctx = canvas.getContext('2d');
+            const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            let w, h, dpr, particles = [];
+            let mouse = { x: -9999, y: -9999 };
+            let colors = { accent: '#00eaff', accent2: '#ff2ee6' };
+
+            function readColors(){
+                const cs = getComputedStyle(document.body);
+                colors.accent = cs.getPropertyValue('--accent').trim() || colors.accent;
+                colors.accent2 = cs.getPropertyValue('--accent-2').trim() || colors.accent2;
+            }
+            window.__updateBgColors = readColors;
+
+            function hexToRgb(hex){
+                const m = hex.replace('#','');
+                const full = m.length === 3 ? m.split('').map(c=>c+c).join('') : m;
+                const num = parseInt(full, 16);
+                return { r: (num>>16) & 255, g: (num>>8) & 255, b: num & 255 };
+            }
+
+            function resize(){
+                dpr = Math.min(window.devicePixelRatio || 1, 2);
+                w = window.innerWidth;
+                h = window.innerHeight;
+                canvas.width = w * dpr;
+                canvas.height = h * dpr;
+                canvas.style.width = w + 'px';
+                canvas.style.height = h + 'px';
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                const count = Math.max(22, Math.min(65, Math.round((w * h) / 22000)));
+                particles = Array.from({ length: count }, () => ({
+                    x: Math.random() * w,
+                    y: Math.random() * h,
+                    vx: (Math.random() - 0.5) * 0.28,
+                    vy: (Math.random() - 0.5) * 0.28,
+                    r: 0.9 + Math.random() * 1.3
+                }));
+            }
+
+            function step(){
+                readColors();
+                const accentRgb = hexToRgb(colors.accent);
+                const accent2Rgb = hexToRgb(colors.accent2);
+                ctx.clearRect(0, 0, w, h);
+                const linkDist = Math.min(140, Math.max(90, w / 10));
+
+                particles.forEach(p => {
+                    if(!reduceMotion){
+                        const dx = p.x - mouse.x, dy = p.y - mouse.y, dist = Math.sqrt(dx*dx + dy*dy);
+                        if(dist < 120 && dist > 0.1){
+                            const force = (120 - dist) / 120 * 0.04;
+                            p.vx += (dx / dist) * force;
+                            p.vy += (dy / dist) * force;
+                        }
+                        p.vx *= 0.989;
+                        p.vy *= 0.989;
+                        const speed = Math.sqrt(p.vx*p.vx + p.vy*p.vy);
+                        if(speed > 0.8){ p.vx = (p.vx/speed)*0.8; p.vy = (p.vy/speed)*0.8; }
+                        p.x += p.vx;
+                        p.y += p.vy;
+                        if(p.x < -20) p.x = w + 20;
+                        if(p.x > w + 20) p.x = -20;
+                        if(p.y < -20) p.y = h + 20;
+                        if(p.y > h + 20) p.y = -20;
+                    }
+                });
+
+                for(let i = 0; i < particles.length; i++){
+                    for(let j = i + 1; j < particles.length; j++){
+                        const a = particles[i], b = particles[j];
+                        const dx = a.x - b.x, dy = a.y - b.y, dist = Math.sqrt(dx*dx + dy*dy);
+                        if(dist < linkDist){
+                            const alpha = (1 - dist / linkDist) * 0.38;
+                            const mixT = (Math.sin((a.x + b.y) * 0.01) + 1) / 2;
+                            const r = Math.round(accentRgb.r + (accent2Rgb.r - accentRgb.r) * mixT);
+                            const g = Math.round(accentRgb.g + (accent2Rgb.g - accentRgb.g) * mixT);
+                            const bl = Math.round(accentRgb.b + (accent2Rgb.b - accentRgb.b) * mixT);
+                            ctx.strokeStyle = `rgba(${r}, ${g}, ${bl}, ${alpha})`;
+                            ctx.lineWidth = 0.8;
+                            ctx.beginPath();
+                            ctx.moveTo(a.x, a.y);
+                            ctx.lineTo(b.x, b.y);
+                            ctx.stroke();
+                        }
+                    }
+                }
+
+                particles.forEach(p => {
+                    ctx.beginPath();
+                    ctx.fillStyle = `rgba(${accentRgb.r}, ${accentRgb.g}, ${accentRgb.b}, 0.78)`;
+                    ctx.shadowColor = colors.accent;
+                    ctx.shadowBlur = 5;
+                    ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+                    ctx.fill();
+                    ctx.shadowBlur = 0;
+                });
+
+                if(!reduceMotion) requestAnimationFrame(step);
+            }
+
+            window.addEventListener('resize', resize, { passive: true });
+            window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; }, { passive: true });
+            window.addEventListener('mouseleave', () => { mouse.x = -9999; mouse.y = -9999; });
+
+            resize();
+            readColors();
+            step();
+        })();
+
+        // Hero-confined particle network (kept)
         (function heroParticles(){
             const canvas=document.getElementById('heroCanvas');
             const ctx=canvas.getContext('2d');
