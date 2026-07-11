@@ -120,7 +120,7 @@
         html.has-fine-cursor, html.has-fine-cursor * { cursor: none !important; }
         html.has-fine-cursor input, html.has-fine-cursor textarea { cursor: text !important; }
 
-        .cursor-dot, .cursor-ring { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999; border-radius: 50%; transform: translate3d(-100px,-100px,0); will-change: transform; opacity: 0; transition: opacity 0.2s ease; }
+        .cursor-dot, .cursor-ring { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 10000; border-radius: 50%; transform: translate3d(-100px,-100px,0); will-change: transform; opacity: 0; transition: opacity 0.2s ease; }
         .cursor-dot { width: 6px; height: 6px; margin: -3px 0 0 -3px; background: var(--accent); box-shadow: 0 0 6px 1px var(--accent), 0 0 14px 2px var(--glow-1); }
         .cursor-ring { width: 30px; height: 30px; margin: -15px 0 0 -15px; border: 1.5px solid var(--accent); box-shadow: 0 0 12px rgba(0,234,255,0.3), inset 0 0 8px rgba(0,234,255,0.15); transition: opacity 0.2s ease, width 0.16s ease, height 0.16s ease, margin 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease; }
         html.has-fine-cursor .cursor-dot, html.has-fine-cursor .cursor-ring { opacity: 1; }
