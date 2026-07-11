@@ -160,12 +160,18 @@
         .topbar-search input::placeholder { color: var(--muted); }
         .topbar-search input:hover { background: var(--card-hover); }
         .topbar-search input:focus { border-color: var(--accent-2); box-shadow: 0 0 0 4px rgba(255,46,230,0.14), 0 0 18px rgba(255,46,230,0.3); padding: 11px 14px 11px 38px; }
-        .search-suggestions { position: absolute; top: calc(100% + 8px); left: 0; right: 0; background: var(--panel); backdrop-filter: blur(18px); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); overflow: hidden; z-index: 30; opacity: 0; visibility: hidden; transform: translateY(-4px); transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s ease; }
-        .search-suggestions.open { opacity: 1; visibility: visible; transform: translateY(0); }
-        .search-suggestion-item { display: flex; align-items: center; gap: 9px; padding: 10px 14px; font-family: var(--font-body); font-size: 0.85rem; color: var(--text); cursor: pointer; transition: 0.15s ease; border-top: 1px solid var(--line); }
+        .search-suggestions { position: fixed; background: var(--panel); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(0,234,255,0.35); border-radius: 16px; box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 24px rgba(0,234,255,0.16); overflow: hidden; z-index: 9999; opacity: 0; visibility: hidden; transform: translateY(-8px); transition: opacity 0.22s cubic-bezier(0.4,0,0.2,1), transform 0.22s cubic-bezier(0.4,0,0.2,1), visibility 0.22s ease; pointer-events: none; }
+        .search-suggestions.open { opacity: 1; visibility: visible; transform: translateY(0); pointer-events: auto; }
+        .search-suggestion-item { display: flex; align-items: center; gap: 11px; padding: 11px 14px; font-family: var(--font-body); font-size: 0.85rem; color: var(--text); cursor: pointer; transition: background 0.15s ease; border-top: 1px solid var(--line); }
         .search-suggestion-item:first-child { border-top: none; }
-        .search-suggestion-item svg { width: 14px; height: 14px; fill: none; stroke: var(--accent); stroke-width: 2; flex: 0 0 auto; opacity: 0.85; }
-        .search-suggestion-item:hover, .search-suggestion-item.active { background: var(--card-hover); color: var(--accent); }
+        .search-suggestion-icon { flex: 0 0 auto; width: 26px; height: 26px; border-radius: 8px; display: grid; place-items: center; background: var(--glow-1); color: var(--accent); }
+        .search-suggestion-icon svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+        .search-suggestion-item:hover, .search-suggestion-item.active { background: var(--card-hover); }
+        .search-suggestion-text { flex: 1 1 auto; display: flex; align-items: baseline; gap: 6px; min-width: 0; }
+        .search-suggestion-text strong { font-weight: 700; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .search-suggestion-meta { color: var(--muted); font-weight: 400; font-size: 0.8em; white-space: nowrap; flex: 0 0 auto; }
+        .search-suggestion-arrow { flex: 0 0 auto; width: 14px; height: 14px; color: var(--muted); opacity: 0; transition: opacity 0.15s ease; }
+        .search-suggestion-item:hover .search-suggestion-arrow, .search-suggestion-item.active .search-suggestion-arrow { opacity: 0.8; color: var(--accent); }
 
         .top-actions { display: flex; align-items: center; gap: 8px; flex: 0 0 auto; }
         .chip { display: inline-flex; align-items: center; justify-content: center; gap: 0; width: 40px; height: 40px; padding: 0; border-radius: 50%; border: 1px solid var(--line); background: var(--chip-bg); color: var(--text); font-family: var(--font-mono); font-size: 0.78rem; font-weight: 600; letter-spacing: 0.02em; cursor: pointer; transition: 0.2s ease; user-select: none; white-space: nowrap; }
@@ -744,7 +750,15 @@
         }
         const searchInput = document.getElementById('searchInput');
         const searchSuggestionsEl = document.getElementById('searchSuggestions');
-        const suggestionIconSVG = `<svg viewBox="0 0 24 24"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>`;
+        document.body.appendChild(searchSuggestionsEl); // portal out of the header so it can never be clipped
+        const suggestionIconSVG = `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 4 5.7 4 9s-1.5 6.5-4 9c-2.5-2.5-4-5.7-4-9s1.5-6.5 4-9z"/></svg>`;
+        const suggestionArrowSVG = `<svg class="search-suggestion-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg>`;
+        function positionSearchSuggestions(){
+            const rect = searchInput.closest('.topbar-search').getBoundingClientRect();
+            searchSuggestionsEl.style.left = `${rect.left}px`;
+            searchSuggestionsEl.style.top = `${rect.bottom + 8}px`;
+            searchSuggestionsEl.style.width = `${rect.width}px`;
+        }
         function matchSearchIndex(query){
             if(!query) return [];
             return SEARCH_INDEX.filter(item => item.label.toLowerCase().includes(query) || item.keywords.some(k => k.includes(query) || query.includes(k)));
@@ -758,11 +772,12 @@
             const matches = matchSearchIndex(query);
             searchSuggestionsEl.innerHTML = '';
             if(!query || !matches.length){ closeSuggestions(); return; }
+            positionSearchSuggestions();
             matches.forEach(item => {
                 const el = document.createElement('div');
                 el.className = 'search-suggestion-item';
                 el.setAttribute('role','option');
-                el.innerHTML = `${suggestionIconSVG}<span>${item.label}</span>`;
+                el.innerHTML = `<span class="search-suggestion-icon">${suggestionIconSVG}</span><span class="search-suggestion-text"><strong>${item.label}</strong><span class="search-suggestion-meta">– Google Drive</span></span>${suggestionArrowSVG}`;
                 el.addEventListener('mousedown', e => {
                     e.preventDefault();
                     item.action();
@@ -776,7 +791,9 @@
         }
         searchInput.addEventListener('input', () => renderSuggestions(searchInput.value.trim().toLowerCase()));
         searchInput.addEventListener('focus', () => { if(searchInput.value.trim()) renderSuggestions(searchInput.value.trim().toLowerCase()); });
-        document.addEventListener('click', e => { if(!e.target.closest('.topbar-search')) closeSuggestions(); });
+        window.addEventListener('resize', () => { if(searchSuggestionsEl.classList.contains('open')) positionSearchSuggestions(); }, { passive: true });
+        window.addEventListener('scroll', () => { if(searchSuggestionsEl.classList.contains('open')) positionSearchSuggestions(); }, { passive: true });
+        document.addEventListener('click', e => { if(!e.target.closest('.topbar-search') && !e.target.closest('.search-suggestions')) closeSuggestions(); });
         searchInput.addEventListener('keydown', e => {
             if (e.key === 'Escape') { closeSuggestions(); return; }
             if (e.key !== 'Enter') return;
