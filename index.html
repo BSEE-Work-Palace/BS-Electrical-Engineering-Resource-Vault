@@ -184,6 +184,9 @@
         .search-suggestion-meta { color: var(--muted); font-weight: 400; font-size: 0.8em; white-space: nowrap; flex: 0 0 auto; }
         .search-suggestion-arrow { flex: 0 0 auto; width: 14px; height: 14px; color: var(--muted); opacity: 0; transition: opacity 0.15s ease; }
         .search-suggestion-item:hover .search-suggestion-arrow, .search-suggestion-item.active .search-suggestion-arrow { opacity: 0.8; color: var(--accent); }
+        .search-suggestion-note { padding: 8px 14px; font-family: var(--font-body); font-size: 0.74rem; color: var(--muted); border-top: 1px solid var(--line); line-height: 1.4; }
+        .search-suggestion-showmore { display: block; width: 100%; text-align: left; padding: 10px 14px; font-family: var(--font-body); font-size: 0.82rem; font-weight: 600; color: var(--accent); background: none; border: none; border-top: 1px solid var(--line); cursor: pointer; transition: background 0.15s ease, color 0.15s ease; }
+        .search-suggestion-showmore:hover { background: var(--card-hover); color: var(--accent-2); }
 
         .top-actions { display: flex; align-items: center; gap: 8px; flex: 0 0 auto; }
         .chip { display: inline-flex; align-items: center; justify-content: center; gap: 0; width: 40px; height: 40px; padding: 0; border-radius: 50%; border: 1px solid var(--line); background: var(--chip-bg); color: var(--text); font-family: var(--font-mono); font-size: 0.78rem; font-weight: 600; letter-spacing: 0.02em; cursor: pointer; transition: 0.2s ease; user-select: none; white-space: nowrap; }
@@ -394,7 +397,7 @@
                 <div class="brand-copy">
                     <div class="eyebrow">BSEE RESOURCE VAULT</div>
                     <h1>BS Electrical Engineering Resource Vault</h1>
-                    <p>Semester Content • Past Papers • Projects • Senior Batch Resources</p>
+                    <p>Semester Content • Past Papers • Projects • Labs • Senior Batch Resources</p>
                 </div>
             </div>
 
@@ -428,12 +431,10 @@
                 <div class="hero-copy">
                     <h2>Welcome to <span class="accent-word">BSEE Resource Vault</span>, Curated by BSEE 25-29 Batch.</h2>
                     <p>A Student-led Academic Resource Hub developed by the BSEE 2025–2029 Batch, providing organized access to semester notes, assignments, projects, past papers, and essential Electrical Engineering resources. The platform promotes academic excellence, collaboration, and knowledge sharing while supporting current and future BSEE students.
-
 </p>
                     <div class="hero-disclaimer">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>
-                        <span><strong>Disclaimer:</strong> The content has been carefully curated; however, minor errors or omissions may exist.
-</span>
+                        <span><strong>Disclaimer:</strong> The content has been carefully curated; however, minor errors or omissions may exist due to possible human error.</span>
                     </div>
                     <div class="hero-actions">
                         <a class="btn" href="#core-modules">Browse Vault</a>
@@ -513,7 +514,7 @@
                             <div class="card-links">
                                 <a class="mini-link" href="https://drive.google.com/drive/folders/184Wg33vlW7vMmpEVoP3cuQS3ZVoE1C-r?usp=sharing" target="_blank" rel="noopener noreferrer">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
-                                    View Papers
+                                    Open Folder
                                 </a>
                             </div>
                         </div>
@@ -655,7 +656,7 @@
         <div class="modal-card" role="dialog" aria-label="Projects" aria-modal="true">
             <button class="modal-close" id="projectsModalClose" type="button" aria-label="Close">×</button>
             <div class="modal-title">Project Library</div>
-            <p class="modal-subtitle">University Projects are available.</p>
+            <p class="modal-subtitle">Only University Projects are available.</p>
             <div id="projectsModalContent"></div>
         </div>
     </div>
@@ -870,37 +871,66 @@
             }
             return SEARCH_INDEX.filter(item => item.label.toLowerCase().includes(query) || item.keywords.some(k => k.includes(query) || wordBoundaryMatch(query, k)));
         }
+        let suggestionsExpanded = false;
         function closeSuggestions(){
             searchSuggestionsEl.classList.remove('open');
             searchSuggestionsEl.innerHTML = '';
             searchInput.setAttribute('aria-expanded','false');
+            suggestionsExpanded = false;
         }
+        function renderSuggestionItem(item){
+            const el = document.createElement('div');
+            el.className = 'search-suggestion-item';
+            el.setAttribute('role','option');
+            el.innerHTML = `<span class="search-suggestion-icon">${suggestionIconSVG}</span><span class="search-suggestion-text"><strong>${item.label}</strong><span class="search-suggestion-meta">– Google Drive</span></span>${suggestionArrowSVG}`;
+            el.addEventListener('mousedown', e => {
+                e.preventDefault();
+                item.action();
+                searchInput.value = '';
+                closeSuggestions();
+            });
+            return el;
+        }
+        const SUGGESTION_DEFAULT_LIMIT = 7;
+        const SUGGESTION_MAX_LIMIT = 15;
         function renderSuggestions(query){
             const matches = matchSearchIndex(query);
             searchSuggestionsEl.innerHTML = '';
             if(!query || !matches.length){ closeSuggestions(); return; }
             positionSearchSuggestions();
-            matches.forEach(item => {
-                const el = document.createElement('div');
-                el.className = 'search-suggestion-item';
-                el.setAttribute('role','option');
-                el.innerHTML = `<span class="search-suggestion-icon">${suggestionIconSVG}</span><span class="search-suggestion-text"><strong>${item.label}</strong><span class="search-suggestion-meta">– Google Drive</span></span>${suggestionArrowSVG}`;
-                el.addEventListener('mousedown', e => {
-                    e.preventDefault();
-                    item.action();
-                    searchInput.value = '';
-                    closeSuggestions();
-                });
-                searchSuggestionsEl.appendChild(el);
-            });
+            const limit = suggestionsExpanded ? Math.min(matches.length, SUGGESTION_MAX_LIMIT) : Math.min(matches.length, SUGGESTION_DEFAULT_LIMIT);
+            matches.slice(0, limit).forEach(item => searchSuggestionsEl.appendChild(renderSuggestionItem(item)));
+            if (!suggestionsExpanded && matches.length > SUGGESTION_DEFAULT_LIMIT) {
+                const note = document.createElement('div');
+                note.className = 'search-suggestion-note';
+                note.textContent = 'Showing the top 7 most relevant results.';
+                searchSuggestionsEl.appendChild(note);
+                const showMore = document.createElement('button');
+                showMore.type = 'button';
+                showMore.className = 'search-suggestion-showmore';
+                showMore.textContent = 'Show More Suggestions';
+                showMore.addEventListener('mousedown', e => e.preventDefault());
+                showMore.addEventListener('click', () => { suggestionsExpanded = true; renderSuggestions(query); });
+                searchSuggestionsEl.appendChild(showMore);
+            } else if (suggestionsExpanded && matches.length > SUGGESTION_MAX_LIMIT) {
+                const note = document.createElement('div');
+                note.className = 'search-suggestion-note';
+                note.textContent = 'Showing the top 15 most relevant results. Refine your search to see more specific matches.';
+                searchSuggestionsEl.appendChild(note);
+            }
             searchSuggestionsEl.classList.add('open');
             searchInput.setAttribute('aria-expanded','true');
         }
-        searchInput.addEventListener('input', () => renderSuggestions(searchInput.value.trim().toLowerCase()));
+        searchInput.addEventListener('input', () => { suggestionsExpanded = false; renderSuggestions(searchInput.value.trim().toLowerCase()); });
         searchInput.addEventListener('focus', () => { if(searchInput.value.trim()) renderSuggestions(searchInput.value.trim().toLowerCase()); });
         window.addEventListener('resize', () => { if(searchSuggestionsEl.classList.contains('open')) positionSearchSuggestions(); }, { passive: true });
         window.addEventListener('scroll', () => { if(searchSuggestionsEl.classList.contains('open')) positionSearchSuggestions(); }, { passive: true });
-        document.addEventListener('click', e => { if(!e.target.closest('.topbar-search') && !e.target.closest('.search-suggestions')) closeSuggestions(); });
+        document.addEventListener('click', e => {
+            const path = typeof e.composedPath === 'function' ? e.composedPath() : [];
+            const topbarSearchEl = searchInput.closest('.topbar-search');
+            const clickedInsideSearch = path.includes(topbarSearchEl) || path.includes(searchSuggestionsEl);
+            if (!clickedInsideSearch) closeSuggestions();
+        });
         searchInput.addEventListener('keydown', e => {
             if (e.key === 'Escape') { closeSuggestions(); return; }
             if (e.key !== 'Enter') return;
